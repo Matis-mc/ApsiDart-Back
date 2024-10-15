@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.mvnpm.at.webcomponents</groupId>
+  <artifactId>shadycss</artifactId>
+  <version>1.11.2</version>
+  <name>webcomponents shadycss</name>
+  <description>Polyfill for Scoped CSS</description>
+  <url>https://github.com/webcomponents/polyfills/tree/master/packages/shadycss</url>
+  <organization>
+    <name>The Polymer Project Authors</name>
+    <url>https://github.com/webcomponents/polyfills/tree/master/packages/shadycss</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>BSD-3-Clause</name>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>webcomponents-devs</name>
+      <email>polymer-ci@google.com</email>
+    </developer>
+    <developer>
+      <name>bicknellr</name>
+      <email>bicknellr@gmail.com</email>
+    </developer>
+    <developer>
+      <name>azakus</name>
+      <email>dfreedm2@gmail.com</email>
+    </developer>
+    <developer>
+      <name>aomarks</name>
+      <email>aomarks@gmail.com</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>https://github.com/webcomponents/polyfills.git</connection>
+    <developerConnection>https://github.com/webcomponents/polyfills.git</developerConnection>
+    <url>https://github.com/webcomponents/polyfills</url>
+  </scm>
+  <issueManagement>
+    <url>https://github.com/webcomponents/polyfills/issues?q=is%3Aissue+is%3Aopen+label%3A"Package%3A+shadycss"</url>
+  </issueManagement>
+</project>

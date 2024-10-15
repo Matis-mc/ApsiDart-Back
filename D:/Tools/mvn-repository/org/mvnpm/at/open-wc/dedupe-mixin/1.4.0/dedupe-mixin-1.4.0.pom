@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.mvnpm.at.open-wc</groupId>
+  <artifactId>dedupe-mixin</artifactId>
+  <version>1.4.0</version>
+  <name>open-wc dedupe-mixin</name>
+  <description>Dedupe JavaScript Class Mixins</description>
+  <url>https://github.com/open-wc/open-wc/tree/master/packages/dedupe-mixin</url>
+  <organization>
+    <name>open-wc</name>
+    <url>https://github.com/open-wc/open-wc/tree/master/packages/dedupe-mixin</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>MIT</name>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>d4kmor</name>
+      <email>d4kmor@gmail.com</email>
+    </developer>
+    <developer>
+      <name>larsdenbakker</name>
+      <email>larsdenbakker@gmail.com</email>
+    </developer>
+    <developer>
+      <name>modern-web</name>
+      <email>hello@modern-web.dev</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>https://github.com/open-wc/open-wc.git</connection>
+    <developerConnection>https://github.com/open-wc/open-wc.git</developerConnection>
+    <url>https://github.com/open-wc/open-wc</url>
+  </scm>
+  <issueManagement>
+    <url>https://github.com/open-wc/open-wc/issues</url>
+  </issueManagement>
+</project>

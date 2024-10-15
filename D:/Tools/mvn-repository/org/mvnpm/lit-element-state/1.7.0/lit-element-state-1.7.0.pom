@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.mvnpm</groupId>
+  <artifactId>lit-element-state</artifactId>
+  <version>1.7.0</version>
+  <name>lit-element-state</name>
+  <description>Simple shared app state management for LitElement</description>
+  <url>https://github.com/gitaarik/lit-state#readme</url>
+  <organization>
+    <name>gitaarik</name>
+    <url>https://github.com/gitaarik/lit-state#readme</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>LGPL-3.0-or-later</name>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>gitaarik</name>
+      <email>gitaarik@posteo.net</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>https://github.com/gitaarik/lit-state.git</connection>
+    <developerConnection>https://github.com/gitaarik/lit-state.git</developerConnection>
+    <url>https://github.com/gitaarik/lit-state</url>
+  </scm>
+  <issueManagement>
+    <url>https://github.com/gitaarik/lit-state/issues</url>
+  </issueManagement>
+</project>

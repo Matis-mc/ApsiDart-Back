@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.mvnpm</groupId>
+  <artifactId>es-module-shims</artifactId>
+  <version>1.10.0</version>
+  <name>es-module-shims</name>
+  <description>Shims for the latest ES module features</description>
+  <url>https://github.com/guybedford/es-module-shims#readme</url>
+  <organization>
+    <name>Guy Bedford</name>
+    <url>https://github.com/guybedford/es-module-shims#readme</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>MIT</name>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>guybedford</name>
+      <email>guybedford@gmail.com</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>https://github.com/guybedford/es-module-shims.git</connection>
+    <developerConnection>https://github.com/guybedford/es-module-shims.git</developerConnection>
+    <url>https://github.com/guybedford/es-module-shims</url>
+  </scm>
+  <issueManagement>
+    <url>https://github.com/guybedford/es-module-shims/issues</url>
+  </issueManagement>
+</project>

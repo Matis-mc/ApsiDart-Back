@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.mvnpm.at.types</groupId>
+  <artifactId>trusted-types</artifactId>
+  <version>2.0.7</version>
+  <name>types trusted-types</name>
+  <description>TypeScript definitions for trusted-types</description>
+  <url>https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/trusted-types</url>
+  <organization>
+    <name>types trusted-types</name>
+    <url>https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/trusted-types</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>MIT</name>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>types</name>
+      <email>ts-npm-types@microsoft.com</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>https://github.com/DefinitelyTyped/DefinitelyTyped.git</connection>
+    <developerConnection>https://github.com/DefinitelyTyped/DefinitelyTyped.git</developerConnection>
+    <url>https://github.com/DefinitelyTyped/DefinitelyTyped</url>
+  </scm>
+</project>

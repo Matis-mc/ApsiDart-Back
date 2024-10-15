@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.smallrye</groupId>
+        <artifactId>smallrye-parent</artifactId>
+        <version>45</version>
+    </parent>
+
+    <groupId>io.smallrye.common</groupId>
+    <artifactId>smallrye-common-parent</artifactId>
+    <version>2.6.0</version>
+
+    <packaging>pom</packaging>
+    <name>SmallRye Common: Parent</name>
+    <url>http://smallrye.io</url>
+    <description>Common utilities for SmallRye</description>
+    <properties>
+        <!-- Plugins -->
+        <version.bridger>1.6.Final</version.bridger>
+        <version.module-info>2.1</version.module-info>
+        <version.sundrio>0.200.0</version.sundrio>
+        <version.jandex-maven-plugin>1.2.3</version.jandex-maven-plugin>
+
+        <!-- Dependencies -->
+        <version.asm>9.7</version.asm>
+        <version.graalvm>24.0.2</version.graalvm>
+        <version.vertx>4.5.9</version.vertx>
+        <version.maven-resolver>1.9.20</version.maven-resolver>
+        <version.shrinkwrap>1.2.6</version.shrinkwrap>
+        <version.org.jboss.logging>3.6.0.Final</version.org.jboss.logging>
+
+        <!-- Sonar settings -->
+        <sonar.projectName>SmallRye Common</sonar.projectName>
+        <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+    </properties>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/smallrye/smallrye-common/issues</url>
+    </issueManagement>
+
+    <scm>
+        <connection>scm:git:git@github.com:smallrye/smallrye-common.git</connection>
+        <developerConnection>scm:git:git@github.com:smallrye/smallrye-common.git</developerConnection>
+        <url>https://github.com/smallrye/smallrye-common/</url>
+        <tag>2.6.0</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>smallrye-common-team</id>
+            <name>SmallRye Common Team</name>
+            <organization>smallrye-common</organization>
+            <organizationUrl>https://smallrye.io/</organizationUrl>
+        </developer>
+    </developers>
+
+    <modules>
+        <!-- implementations -->
+        <module>annotation</module>
+        <module>classloader</module>
+        <module>constraint</module>
+        <module>cpu</module>
+        <module>expression</module>
+        <module>function</module>
+        <module>io</module>
+        <module>net</module>
+        <module>os</module>
+        <module>ref</module>
+        <module>resource</module>
+        <module>version</module>
+        <module>vertx-context</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- External build dependencies -->
+            <dependency>
+                <groupId>org.graalvm.sdk</groupId>
+                <artifactId>nativeimage</artifactId>
+                <version>${version.graalvm}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- External test dependencies -->
+            <dependency>
+                <groupId>org.jboss.shrinkwrap</groupId>
+                <artifactId>shrinkwrap-bom</artifactId>
+                <version>${version.shrinkwrap}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.ow2.asm</groupId>
+                <artifactId>asm</artifactId>
+                <version>${version.asm}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- Internal module dependencies -->
+            <dependency>
+                <groupId>io.smallrye.common</groupId>
+                <artifactId>smallrye-common-constraint</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.smallrye.common</groupId>
+                <artifactId>smallrye-common-expression</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.smallrye.common</groupId>
+                <artifactId>smallrye-common-function</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.smallrye.common</groupId>
+                <artifactId>smallrye-common-net</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.smallrye.common</groupId>
+                <artifactId>smallrye-common-vertx-context</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.jboss.jandex</groupId>
+                    <artifactId>jandex-maven-plugin</artifactId>
+                    <version>${version.jandex-maven-plugin}</version>
+                    <executions>
+                        <execution>
+                            <id>make-index</id>
+                            <goals>
+                                <goal>jandex</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!-- TODO - Workaround for javadoc / module-info generation -->
+                <!-- The javadoc plugin expects a module-info.java (because it finds the .class generated one), and
+                     because we don't have one, it fails. Forcing to legacy mode removes any module configuration for the
+                     javadoc command
+                -->
+                <plugin>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <configuration>
+                        <legacyMode>true</legacyMode>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>io.github.dmlloyd.module-info</groupId>
+                    <artifactId>module-info</artifactId>
+                    <version>${version.module-info}</version>
+                    <executions>
+                        <execution>
+                            <id>module-info</id>
+                            <phase>process-classes</phase>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.jboss.bridger</groupId>
+                    <artifactId>bridger</artifactId>
+                    <version>${version.bridger}</version>
+                    <executions>
+                        <execution>
+                            <id>bridger</id>
+                            <phase>process-classes</phase>
+                            <goals>
+                                <goal>transform</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>io.sundr</groupId>
+                <artifactId>sundr-maven-plugin</artifactId>
+                <version>${version.sundrio}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate-bom</goal>
+                        </goals>
+                        <configuration>
+                            <boms>
+                                <bom>
+                                    <artifactId>smallrye-common-bom</artifactId>
+                                    <name>Smallrye Common: BOM</name>
+                                    <description>Centralized dependencyManagement for the SmallRye Common Project</description>
+                                    <properties>
+                                        <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
+                                        <sonar.skip>true</sonar.skip>
+                                    </properties>
+                                </bom>
+                            </boms>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

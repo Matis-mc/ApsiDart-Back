@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.mvnpm</groupId>
+  <artifactId>argparse</artifactId>
+  <version>2.0.1</version>
+  <name>argparse</name>
+  <description>CLI arguments parser. Native port of python's argparse.</description>
+  <url>https://github.com/nodeca/argparse#readme</url>
+  <organization>
+    <name>argparse</name>
+    <url>https://github.com/nodeca/argparse#readme</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>Python-2.0</name>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>vitaly</name>
+      <email>vitaly@rcdesign.ru</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>https://github.com/nodeca/argparse.git</connection>
+    <developerConnection>https://github.com/nodeca/argparse.git</developerConnection>
+    <url>https://github.com/nodeca/argparse</url>
+  </scm>
+  <issueManagement>
+    <url>https://github.com/nodeca/argparse/issues</url>
+  </issueManagement>
+</project>

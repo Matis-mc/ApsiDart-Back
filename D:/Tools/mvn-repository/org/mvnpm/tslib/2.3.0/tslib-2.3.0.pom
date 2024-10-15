@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.mvnpm</groupId>
+  <artifactId>tslib</artifactId>
+  <version>2.3.0</version>
+  <name>tslib</name>
+  <description>Runtime library for TypeScript helper functions</description>
+  <url>https://www.typescriptlang.org/</url>
+  <organization>
+    <name>Microsoft Corp.</name>
+    <url>https://www.typescriptlang.org/</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>0BSD</name>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>typescript-bot</name>
+      <email>typescript@microsoft.com</email>
+    </developer>
+    <developer>
+      <name>weswigham</name>
+      <email>wwigham@gmail.com</email>
+    </developer>
+    <developer>
+      <name>sanders_n</name>
+      <email>ncsander@indiana.edu</email>
+    </developer>
+    <developer>
+      <name>andrewbranch</name>
+      <email>andrew@wheream.io</email>
+    </developer>
+    <developer>
+      <name>minestarks</name>
+      <email>mineyalc@microsoft.com</email>
+    </developer>
+    <developer>
+      <name>rbuckton</name>
+      <email>rbuckton@chronicles.org</email>
+    </developer>
+    <developer>
+      <name>sheetalkamat</name>
+      <email>shkamat@microsoft.com</email>
+    </developer>
+    <developer>
+      <name>orta</name>
+      <email>orta.therox@gmail.com</email>
+    </developer>
+    <developer>
+      <name>typescript-deploys</name>
+      <email>ortam@microsoft.com</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>https://github.com/Microsoft/tslib.git</connection>
+    <developerConnection>https://github.com/Microsoft/tslib.git</developerConnection>
+    <url>https://github.com/Microsoft/tslib</url>
+  </scm>
+  <issueManagement>
+    <url>https://github.com/Microsoft/TypeScript/issues</url>
+  </issueManagement>
+</project>

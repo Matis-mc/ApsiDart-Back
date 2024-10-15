@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.mvnpm.at.polymer</groupId>
+  <artifactId>polymer</artifactId>
+  <version>3.5.1</version>
+  <name>polymer polymer</name>
+  <description>The Polymer library makes it easy to create your own web components. Give your element some markup and properties, and then use it on a site. Polymer provides features like dynamic templates and data binding to reduce the amount of boilerplate you need to</description>
+  <url>https://github.com/Polymer/polymer</url>
+  <organization>
+    <name>The Polymer Project Authors</name>
+    <url>https://github.com/Polymer/polymer</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>BSD-3-Clause</name>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>aomarks</name>
+      <email>aomarks@gmail.com</email>
+    </developer>
+    <developer>
+      <name>emarquez</name>
+      <email>emarquez@google.com</email>
+    </developer>
+    <developer>
+      <name>sorvell</name>
+      <email>sorvell@google.com</email>
+    </developer>
+    <developer>
+      <name>bicknellr</name>
+      <email>bicknellr@gmail.com</email>
+    </developer>
+    <developer>
+      <name>usergenic</name>
+      <email>brendan@usergenic.com</email>
+    </developer>
+    <developer>
+      <name>polymer-devs</name>
+      <email>admin@polymer-project.org</email>
+    </developer>
+    <developer>
+      <name>azakus</name>
+      <email>dfreedm2@gmail.com</email>
+    </developer>
+    <developer>
+      <name>kevinpschaaf</name>
+      <email>kevinpschaaf@gmail.com</email>
+    </developer>
+    <developer>
+      <name>justinfagnani</name>
+      <email>justin@fagnani.com</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>https://github.com/Polymer/polymer.git</connection>
+    <developerConnection>https://github.com/Polymer/polymer.git</developerConnection>
+    <url>https://github.com/Polymer/polymer</url>
+  </scm>
+  <issueManagement>
+    <url>https://github.com/Polymer/polymer/issues</url>
+  </issueManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.mvnpm.at.webcomponents</groupId>
+      <artifactId>shadycss</artifactId>
+      <version>[1.9.1,2)</version>
+    </dependency>
+  </dependencies>
+</project>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.mvnpm</groupId>
+  <artifactId>path-to-regexp</artifactId>
+  <version>2.4.0</version>
+  <name>path-to-regexp</name>
+  <description>Express style path to RegExp utility</description>
+  <url>https://github.com/pillarjs/path-to-regexp#readme</url>
+  <organization>
+    <name>path-to-regexp</name>
+    <url>https://github.com/pillarjs/path-to-regexp#readme</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>MIT</name>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>blakeembrey</name>
+      <email>hello@blakeembrey.com</email>
+    </developer>
+    <developer>
+      <name>defunctzombie</name>
+      <email>shtylman@gmail.com</email>
+    </developer>
+    <developer>
+      <name>dougwilson</name>
+      <email>doug@somethingdoug.com</email>
+    </developer>
+    <developer>
+      <name>jonathanong</name>
+      <email>jonathanrichardong@gmail.com</email>
+    </developer>
+    <developer>
+      <name>jongleberry</name>
+      <email>jonathanrichardong@gmail.com</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>https://github.com/pillarjs/path-to-regexp.git</connection>
+    <developerConnection>https://github.com/pillarjs/path-to-regexp.git</developerConnection>
+    <url>https://github.com/pillarjs/path-to-regexp</url>
+  </scm>
+  <issueManagement>
+    <url>https://github.com/pillarjs/path-to-regexp/issues</url>
+  </issueManagement>
+</project>
