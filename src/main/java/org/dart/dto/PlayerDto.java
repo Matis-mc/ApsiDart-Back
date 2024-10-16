@@ -1,6 +1,6 @@
-package org.dart.model;
+package org.dart.dto;
 
-public record DartPlayer(
+public record PlayerDto(
     String id,
     String prenom,
     String nom,
