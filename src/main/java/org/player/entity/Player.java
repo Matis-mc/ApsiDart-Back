@@ -1,29 +1,22 @@
 package org.player.entity;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "player")
-public class Player {
+public class Player extends PanacheEntity {
 
-    @Id 
-    private String id;
-    private String fistName;
-    private String lastName;
-    private String pseudo;
-
-
-    public String getId() {
-        return id;
-    }
+    public String firstName;
+    public String lastName;
+    public String pseudo;
 
     public String getFistName() {
-        return fistName;
+        return firstName;
     }
     public void setFistName(String fistName) {
-        this.fistName = fistName;
+        this.firstName = fistName;
     }
     public String getLastName() {
         return lastName;

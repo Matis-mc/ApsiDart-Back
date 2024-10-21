@@ -1,6 +1,8 @@
 package org.player;
 
 
+import java.util.List;
+
 import org.dart.dto.PlayerDto;
 import org.player.entity.Player;
 
@@ -16,13 +18,23 @@ public class PlayerRepository {
     EntityManager em;
 
     @Transactional
-    public String createPlayer(PlayerDto player){
-        Player entity = new Player();
-        entity.setFistName(player.prenom());
-        entity.setLastName(player.nom());
-        entity.setPseudo(player.pseudo());
-        em.persist(player);
-        return entity.getId();
+    public Long createPlayer(PlayerDto p){
+        Player pe = new Player();
+        pe.firstName = p.prenom();
+        pe.lastName = p.nom();
+        pe.pseudo = p.pseudo();
+        pe.persist();
+        return pe.id;
+
+        
+    }
+
+    public List<PlayerDto> getAllPlayers(){
+        List<Player> players = Player.listAll();
+        return players
+            .stream()
+            .map(p -> PlayerMapper.entityToDto(p))
+            .toList();
     }
 
 }
