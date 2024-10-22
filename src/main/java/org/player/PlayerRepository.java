@@ -10,6 +10,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.NotFoundException;
 
 @ApplicationScoped
 public class PlayerRepository {
@@ -25,7 +26,6 @@ public class PlayerRepository {
         pe.pseudo = p.pseudo();
         pe.persist();
         return pe.id;
-
         
     }
 
@@ -36,5 +36,21 @@ public class PlayerRepository {
             .map(p -> PlayerMapper.entityToDto(p))
             .toList();
     }
+
+    public PlayerDto getPlayer(Long id){
+        Player p =  Player.findById(id);
+        return PlayerMapper.entityToDto(p);
+    }
+
+    @Transactional
+    public boolean deletePlayer(Long id){
+        Player p = Player.findById(id);
+        if(p == null){
+            throw new NotFoundException();
+        }
+        return Player.deleteById(id);
+    }
+
+
 
 }
