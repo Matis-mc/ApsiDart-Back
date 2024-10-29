@@ -30,9 +30,5 @@ public class Player extends PanacheEntity {
     public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
     }
-
-
-
-
     
 }
