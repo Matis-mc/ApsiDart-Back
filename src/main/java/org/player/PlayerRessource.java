@@ -2,16 +2,15 @@ package org.player;
 
 import java.util.List;
 
-import org.dart.dto.PlayerDto;
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
+import org.player.entity.Player;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
@@ -28,20 +27,21 @@ public class PlayerRessource {
     PlayerRepository pr;
 
     @POST
-    public Long createPlayer(PlayerDto player){
+    public Long createPlayer(Player player){
         LOG.debug("Creation d'un nouveau joueur : " + player.toString());
-        return pr.createPlayer(player);
+        pr.persist(player);
+        return player.id;
     }
 
     @GET
-    public List<PlayerDto> getPlayers(){
-        return pr.getAllPlayers();
+    public List<Player> getPlayers(){
+        return pr.listAll();
     }
 
     @GET
     @Path("/{id}")
-    public PlayerDto getPlayerById(@PathParam long id){
-        return pr.getPlayer(id);
+    public Player getPlayerById(@PathParam long id){
+        return pr.findById(id);
     }
 
     @DELETE
@@ -49,10 +49,6 @@ public class PlayerRessource {
     public void deletePlayer(@PathParam long id){
         pr.deletePlayer(id);
 
-    }
-
-    @PUT
-    public void updatePlayer(PlayerDto player){
     }
 
     
