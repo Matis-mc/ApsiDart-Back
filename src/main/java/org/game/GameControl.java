@@ -3,12 +3,14 @@ package org.game;
 import org.game.dto.GameCreationDto;
 import org.game.dto.GamePerformDto;
 
-public abstract class GameControl {
+public interface GameControl {
+
+    String getType();
     
-    public abstract Long initGame(GameCreationDto paylaod);
+    Long initGame(GameCreationDto paylaod);
 
-    public abstract void performOnGame(GamePerformDto payload);
+    void performOnGame(GamePerformDto payload);
 
-    public abstract void terminateGame();
+    void terminateGame();
 
 }

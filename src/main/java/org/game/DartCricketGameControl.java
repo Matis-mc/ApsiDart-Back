@@ -6,10 +6,14 @@ import org.game.dto.GamePerformDto;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class DartCricketGameControl extends GameControl {
+public class DartCricketGameControl implements GameControl {
+
+    public final String TYPE = "DACKT";
 
     @Override
     public Long initGame(GameCreationDto paylaod) {
+        
+        return 1L;
 
     }
 
@@ -21,6 +25,11 @@ public class DartCricketGameControl extends GameControl {
     @Override
     public void terminateGame() {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public String getType() {
+        return TYPE;
     }
 
 }

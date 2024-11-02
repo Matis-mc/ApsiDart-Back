@@ -1,9 +1,14 @@
 package org.game;
 
+import java.util.List;
+import java.util.Map;
+
 import org.game.dto.GameCreationDto;
 import org.game.enums.CodeTypGameEnum;
 
+import io.quarkus.arc.All;
 import jakarta.activation.UnsupportedDataTypeException;
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -11,17 +16,21 @@ import jakarta.inject.Inject;
 public class GameFactory {
 
     @Inject
-    DartCricketGameControl dartCricketGameControl;
+    @All
+    List<GameControl> gameControls;
 
-    @Inject
-    DartX01GameControl dartX01GameControl;
+    private Map<String, GameControl> controlMap;
+
+    @PostConstruct
+    void initGameMap(){
+        gameControls.forEach(g -> {
+            controlMap.put(g.getType(), g);
+        });
+    }
+
 
     public Long initGame(GameCreationDto payload) throws UnsupportedDataTypeException{
-        return switch (payload.typeJeu().code()){
-            case "DART_CRICKET" -> dartCricketGameControl.initGame(payload);
-            case "DART_301", "DART_501" -> dartX01GameControl.initGame(payload);
-            default: -> throw new UnsupportedDataTypeException("Aucun mode de jeu ne correspond au code renseigné");
-        }
+        return controlMap.get(payload.typeJeu().code().toString()).initGame(payload);
 
     }
     
