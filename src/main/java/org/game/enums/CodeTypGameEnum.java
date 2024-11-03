@@ -2,9 +2,8 @@ package org.game.enums;
 
 public enum CodeTypGameEnum {
 
-    DA301("DART_301"),
-    DA501("DART_301"),
-    DACKT("DART_CRICKET");
+    DAX01("DAX01"),
+    DACKT("DACKT");
 
     public final String libelle;
 

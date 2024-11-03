@@ -1,7 +1,12 @@
 package org.player.entity;
 
+import java.util.List;
+
+import org.game.entity.DPerform;
+
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -11,6 +16,9 @@ public class Player extends PanacheEntity {
     public String firstName;
     public String lastName;
     public String pseudo;
+
+    @OneToMany
+    private List<DPerform> dPerform;
 
     public String getFistName() {
         return firstName;

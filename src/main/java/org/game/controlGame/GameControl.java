@@ -1,4 +1,4 @@
-package org.game;
+package org.game.controlGame;
 
 import org.game.dto.GameCreationDto;
 import org.game.dto.GamePerformDto;
