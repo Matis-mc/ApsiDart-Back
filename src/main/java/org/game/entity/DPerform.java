@@ -23,7 +23,13 @@ public class DPerform extends PanacheEntity{
 
     public Integer score;
 
+    public Integer nombreTour;
+
     public List<String> volees;
+
+    public static DPerform findByIdGameAndPlayer(){
+        return null;
+    }
 
 
 }

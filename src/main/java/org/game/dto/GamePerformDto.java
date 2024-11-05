@@ -4,8 +4,10 @@ import java.util.Map;
 
 import org.game.model.TypeGame;
 
+import jakarta.validation.constraints.NotNull;
+
 public record GamePerformDto(
-    TypeGame modeJeu,
+    @NotNull TypeGame modeJeu,
     Long idJeu,
     Map<String, Object> properties
 ) {

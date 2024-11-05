@@ -30,7 +30,7 @@ public class DartCricketGameControl implements GameControl {
 
     @Override
     public void performOnGame(GamePerformDto payload) {
-        throw new UnsupportedOperationException("Not supported yet.");
+       
     }
 
     @Override
@@ -62,7 +62,7 @@ public class DartCricketGameControl implements GameControl {
         dPerform.dartPlayer = participant;
         dPerform.position = 0;
         dPerform.score = 0;
-        dPerform.volees = new ArrayList<String>();
+        dPerform.volees = new ArrayList<>();
         dPerform.persist();
         return dPerform;
     }
