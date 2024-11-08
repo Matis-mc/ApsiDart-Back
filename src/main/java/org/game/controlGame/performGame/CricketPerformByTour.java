@@ -7,9 +7,7 @@ import static org.common.DartConstant.Context.NUM_TOUR;
 import static org.common.DartConstant.Context.PSEUDO;
 import static org.common.DartConstant.Context.SCORE;
 import org.game.dto.GamePerformDto;
-
 import org.game.dto.dart.DartContextPropertyDto;
-import org.game.entity.DPerform;
 
 public class CricketPerformByTour implements CricketPerformGame{
 
@@ -29,7 +27,8 @@ public class CricketPerformByTour implements CricketPerformGame{
     }
 
     private void persistDPerformFromContext(String idJeu, DartContextPropertyDto context){
-        DPerform dp = DPerform.findById()    }
+        //DPerform dp = DPerform.findById();
+        }
 
     private DartContextPropertyDto mapToContext(Map<String, Object> properties){
         return new DartContextPropertyDto(
