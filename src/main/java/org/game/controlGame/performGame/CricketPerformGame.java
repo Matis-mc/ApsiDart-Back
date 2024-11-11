@@ -4,7 +4,7 @@ import org.game.dto.GamePerformDto;
 
 public interface CricketPerformGame {
 
-    String getMode();
+    String getType();
 
     void persistPerformGame(GamePerformDto dto);
 

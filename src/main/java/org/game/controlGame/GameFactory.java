@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.game.dto.GameCreationDto;
+import org.game.dto.GamePerformDto;
 import org.jboss.logging.Logger;
 
 import io.quarkus.arc.All;
@@ -33,9 +34,11 @@ public class GameFactory {
 
 
     public Long initGame(GameCreationDto payload) throws UnsupportedDataTypeException{
-        log.error("keyset " + controlMap.keySet());
         return controlMap.get(payload.typeJeu().code().toString()).initGame(payload);
+    }
 
+    public void performGame(GamePerformDto payload){
+        controlMap.get(payload.modeJeu().code().toString()).performOnGame(payload);
     }
     
 }

@@ -1,12 +1,15 @@
 package org.player;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 import org.player.entity.Player;
 
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -27,7 +30,9 @@ public class PlayerRessource {
     PlayerRepository pr;
 
     @POST
+    @Transactional
     public Long createPlayer(Player player){
+        checkPlayerProperties(player);
         LOG.debug("Creation d'un nouveau joueur : " + player.toString());
         pr.persist(player);
         return player.id;
@@ -49,6 +54,13 @@ public class PlayerRessource {
     public void deletePlayer(@PathParam long id){
         pr.deleteById(id);
 
+    }
+
+    private void checkPlayerProperties(Player player){
+        if(Objects.isNull(player.firstName)
+        || Objects.isNull(player.lastName)){
+            throw new BadRequestException("Le(s) champ(s) firstName ou lastName n'est pas renseigné.");
+        }
     }
 
     

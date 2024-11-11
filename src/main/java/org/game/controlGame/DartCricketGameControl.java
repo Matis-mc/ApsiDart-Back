@@ -2,22 +2,41 @@ package org.game.controlGame;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.common.Constant;
+import org.game.controlGame.performGame.CricketPerformGame;
 import org.game.dto.GameCreationDto;
 import org.game.dto.GamePerformDto;
 import org.game.entity.DGame;
 import org.game.entity.DPerform;
 import org.player.entity.Player;
 
+import io.quarkus.arc.All;
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class DartCricketGameControl implements GameControl {
 
     public final String TYPE = "DACKT";
+
+    @Inject
+    @All
+    List<CricketPerformGame> performGames;
+
+    private Map<String, CricketPerformGame> controlMap = new HashMap<String, CricketPerformGame>();
+
+    @PostConstruct
+    void initGameMap(){
+        performGames.forEach(g -> {
+            controlMap.put(g.getType(), g);
+        });
+    }
 
     @Override
     @Transactional
@@ -30,7 +49,7 @@ public class DartCricketGameControl implements GameControl {
 
     @Override
     public void performOnGame(GamePerformDto payload) {
-       
+       controlMap.get(getModeJeu(payload)).persistPerformGame(payload);
     }
 
     @Override
@@ -67,4 +86,7 @@ public class DartCricketGameControl implements GameControl {
         return dPerform;
     }
 
+    private String getModeJeu(GamePerformDto dto){
+        return dto.modeJeu().properties().get("mode").toString();
+    }
 }

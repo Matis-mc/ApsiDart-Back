@@ -34,7 +34,7 @@ public class GameRessource {
     @POST
     @Path("/perform")
     public void performOnGame(GamePerformDto payload){
-
+        gf.performGame(payload);
     }
 
     @GET

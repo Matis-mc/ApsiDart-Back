@@ -2,15 +2,22 @@ package org.game.entity;
 
 import java.util.List;
 
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 import org.player.entity.Player;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.panache.common.Parameters;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table( name = "dartPerform")
+@NamedQueries({
+    @NamedQuery(name = "DPerform.findByIdGameAndIdPlayer", 
+    query = "from DPerform dp where dp.dartPlayer.id = :idPlayer and dp.dartGame.id = :idGame")
+})
 public class DPerform extends PanacheEntity{
 
     @ManyToOne
@@ -27,8 +34,8 @@ public class DPerform extends PanacheEntity{
 
     public List<String> volees;
 
-    public static DPerform findByIdGameAndPlayer(){
-        return null;
+    public static DPerform findByIdGameAndPlayer(String idGame, String idPlayer){
+        return find("DPerform.findByIdGameAndIdPlayer", Parameters.with("idGame", idGame).and("idPlayer", idPlayer)).firstResult();
     }
 
 
