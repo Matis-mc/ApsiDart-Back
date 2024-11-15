@@ -51,9 +51,9 @@ public class PlayerRessource {
 
     @DELETE
     @Path("/{id}")
+    @Transactional
     public void deletePlayer(@PathParam long id){
         pr.deleteById(id);
-
     }
 
     private void checkPlayerProperties(Player player){
