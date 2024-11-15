@@ -1,5 +1,7 @@
 #!/bin/bash
 
+docker compose down
+
 rm ./target/apsidart-*
 
 ./mvnw clean package
