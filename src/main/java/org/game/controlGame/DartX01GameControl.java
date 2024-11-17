@@ -2,6 +2,7 @@ package org.game.controlGame;
 
 import org.game.dto.GameCreationDto;
 import org.game.dto.GamePerformDto;
+import org.game.model.Game;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -31,6 +32,12 @@ public class DartX01GameControl implements GameControl {
     @Override
     public String getType() {
         return TYPE;
+    }
+
+    @Override
+    public Game mapEntityToModel(Object o) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'mapEntityToModel'");
     }
 
 }

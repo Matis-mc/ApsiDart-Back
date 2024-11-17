@@ -37,15 +37,14 @@ public class GameRessource {
         gf.performGame(payload);
     }
 
-    @GET
-    public List<Game> getAllGames(){
-        return List.of();        
-    }
-
     @GET()
     @Path("/dart")
-    public List<Game> getGamesOnCriteria(String typeJeu, String variante, String player, String date){
-        return null;
+    public List<Game> getDartGames(){
+        List<DGame> dgames=  DGame.listAll();
+        return dgames
+            .stream()
+            .map(d -> DartMapper.mapEntityToModel(d))
+            .toList();
     }
 
     // endpoint temporaire de debug

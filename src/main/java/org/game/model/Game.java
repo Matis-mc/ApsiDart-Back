@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Game {
 
+    public Long id;
     public String statut;
     public List<ClassementElement> classement;
     public TypeGame modeJeu;
