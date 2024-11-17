@@ -33,11 +33,4 @@ public class DartX01GameControl implements GameControl {
     public String getType() {
         return TYPE;
     }
-
-    @Override
-    public Game mapEntityToModel(Object o) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mapEntityToModel'");
-    }
-
 }

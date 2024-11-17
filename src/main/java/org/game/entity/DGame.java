@@ -5,6 +5,7 @@ import java.util.List;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -20,9 +21,7 @@ public class DGame extends PanacheEntity {
 
     public LocalDate date;
 
-    @OneToMany
+    @OneToMany(fetch=FetchType.EAGER)
     public List<DPerform> dPerform;
-
-
     
 }

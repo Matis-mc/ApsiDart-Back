@@ -7,16 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.common.Constant;
-import org.common.exceptions.UnsupportedEntityTypeException;
 import org.game.controlGame.performGame.CricketPerformGame;
 import org.game.dto.GameCreationDto;
 import org.game.dto.GamePerformDto;
 import org.game.entity.DGame;
 import org.game.entity.DPerform;
-import org.game.enums.CodeTypGameEnum;
-import org.game.model.ClassementElement;
-import org.game.model.Game;
-import org.game.model.TypeGame;
 import org.player.entity.Player;
 
 import io.quarkus.arc.All;
@@ -88,6 +83,7 @@ public class DartCricketGameControl implements GameControl {
         dPerform.dartPlayer = participant;
         dPerform.position = 0;
         dPerform.score = 0;
+        dPerform.nombreTour = 0;
         dPerform.volees = new ArrayList<>();
         dPerform.persist();
         return dPerform;

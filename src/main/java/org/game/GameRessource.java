@@ -8,9 +8,12 @@ import org.game.dto.GamePerformDto;
 import org.game.entity.DGame;
 import org.game.entity.DPerform;
 import org.game.model.Game;
+import org.hibernate.Hibernate;
 
 import jakarta.activation.UnsupportedDataTypeException;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -21,6 +24,7 @@ import jakarta.ws.rs.core.MediaType;
 @Path("/game")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@ApplicationScoped
 public class GameRessource {
 
     @Inject
@@ -39,8 +43,11 @@ public class GameRessource {
 
     @GET()
     @Path("/dart")
+    @Transactional
     public List<Game> getDartGames(){
-        List<DGame> dgames=  DGame.listAll();
+        List<DGame> dgames = DGame.listAll();
+        dgames.forEach(d -> Hibernate.initialize(d.dPerform)
+        );
         return dgames
             .stream()
             .map(d -> DartMapper.mapEntityToModel(d))
