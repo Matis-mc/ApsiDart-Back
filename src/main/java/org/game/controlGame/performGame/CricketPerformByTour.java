@@ -9,18 +9,18 @@ import static org.common.DartConstant.Context.NUM_TOUR;
 import static org.common.DartConstant.Context.PSEUDO;
 import static org.common.DartConstant.Context.SCORE;
 import static org.common.DartConstant.Context.VOLEE;
-
 import org.game.dto.GamePerformDto;
 import org.game.dto.dart.DartContextPropertyDto;
 import org.game.entity.DPerform;
 
+import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class CricketPerformByTour implements CricketPerformGame{
 
     public static final String TOUR = "TOUR";
-
 
     @Override
     public String getType() {
@@ -28,6 +28,7 @@ public class CricketPerformByTour implements CricketPerformGame{
     }
 
     @Override
+    @Transactional
     public void persistPerformGame(GamePerformDto dto) {
         List<DartContextPropertyDto> performPlayers = dto
             .properties()
@@ -40,13 +41,17 @@ public class CricketPerformByTour implements CricketPerformGame{
 
     }
 
+    @Transactional
     private void persistDPerformFromContext(String idJeu, List<DartContextPropertyDto>  props){
         props.forEach(p -> {
+            Log.info(props);
             DPerform dp = DPerform.findByIdGameAndPlayer(idJeu, p.idJoueur());
+            Log.info("entity before : " +dp.toString());
             dp.nombreTour = Integer.parseInt(p.numeroTour());
-            dp.score = Integer.parseInt(p.score());
+            dp.score += Integer.parseInt(p.score());
             dp.volees.add(p.volee());
-            dp.persist();
+            Log.info("entity after : " +dp.toString());
+            dp.persistAndFlush();
         });
     }
 
