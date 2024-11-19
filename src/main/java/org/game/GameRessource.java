@@ -8,8 +8,8 @@ import org.game.dto.GamePerformDto;
 import org.game.entity.DGame;
 import org.game.entity.DPerform;
 import org.game.model.Game;
-import org.hibernate.Hibernate;
 
+import io.quarkus.logging.Log;
 import jakarta.activation.UnsupportedDataTypeException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -18,6 +18,7 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
@@ -41,13 +42,25 @@ public class GameRessource {
         gf.performGame(payload);
     }
 
+    @GET
+    @Path("dart/{id}")
+    @Transactional
+    public Game getGameById(@PathParam("id") Long id){
+        DGame dGame = DGame.findById(id);
+        dGame.dPerform = DPerform.findByIdGame(id);
+        return DartMapper.mapEntityToModel(dGame);
+
+    }
+
     @GET()
     @Path("/dart")
-    @Transactional
+    @Transactional    
     public List<Game> getDartGames(){
-        List<DGame> dgames = DGame.listAll();
-        dgames.forEach(d -> Hibernate.initialize(d.dPerform)
-        );
+        List<DGame> dgames = DGame.getAll();
+        for(DGame d : dgames){
+            d.dPerform.size();
+        }
+        Log.error("Liste récupérée : " + dgames.toString());
         return dgames
             .stream()
             .map(d -> DartMapper.mapEntityToModel(d))

@@ -46,11 +46,9 @@ public class CricketPerformByTour implements CricketPerformGame{
         props.forEach(p -> {
             Log.info(props);
             DPerform dp = DPerform.findByIdGameAndPlayer(idJeu, p.idJoueur());
-            Log.info("entity before : " +dp.toString());
             dp.nombreTour = Integer.parseInt(p.numeroTour());
             dp.score += Integer.parseInt(p.score());
             dp.volees.add(p.volee());
-            Log.info("entity after : " +dp.toString());
             dp.persistAndFlush();
         });
     }
@@ -69,7 +67,5 @@ public class CricketPerformByTour implements CricketPerformGame{
     private static String extractStringProperty(String key, Map<String, Object> properties){
         return (String) properties.get(key);
     }
-
-    
-    
+   
 }
