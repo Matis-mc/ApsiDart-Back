@@ -9,7 +9,6 @@ import org.game.entity.DGame;
 import org.game.entity.DPerform;
 import org.game.model.Game;
 
-import io.quarkus.logging.Log;
 import jakarta.activation.UnsupportedDataTypeException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -57,13 +56,12 @@ public class GameRessource {
     @Transactional    
     public List<Game> getDartGames(){
         List<DGame> dgames = DGame.getAll();
-        for(DGame d : dgames){
-            d.dPerform.size();
-        }
-        Log.error("Liste récupérée : " + dgames.toString());
         return dgames
             .stream()
-            .map(d -> DartMapper.mapEntityToModel(d))
+            .map(d -> {
+                d.dPerform = DPerform.findByIdGame(d.id);
+                return DartMapper.mapEntityToModel(d);
+            })
             .toList();
     }
 

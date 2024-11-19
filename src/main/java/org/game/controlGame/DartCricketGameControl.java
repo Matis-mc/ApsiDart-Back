@@ -62,12 +62,10 @@ public class DartCricketGameControl implements GameControl {
         return TYPE;
     }
 
-
-
     private DGame createGame(GameCreationDto payload){
         DGame dGame = new DGame();
         dGame.date = LocalDate.now();
-        dGame.statut = Constant.Game.STATUT_CREATE;
+        dGame.statut = Constant.Game.STATUT_IN_PROGRESS;
         dGame.type = payload.typeJeu().code().name();
         dGame.persistAndFlush();
         return dGame;
