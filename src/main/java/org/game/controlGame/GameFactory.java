@@ -41,4 +41,10 @@ public class GameFactory {
     public void performGame(GamePerformDto payload){
         controlMap.get(payload.modeJeu().code().toString()).performOnGame(payload);
     }
+
+    public void endGame(GamePerformDto payload){
+        controlMap.get(payload.modeJeu().code().toString()).terminateGame(payload);
+    }
+
+
 }

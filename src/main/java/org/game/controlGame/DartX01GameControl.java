@@ -2,7 +2,6 @@ package org.game.controlGame;
 
 import org.game.dto.GameCreationDto;
 import org.game.dto.GamePerformDto;
-import org.game.model.Game;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -24,7 +23,7 @@ public class DartX01GameControl implements GameControl {
     }
 
     @Override
-    public void terminateGame() {
+    public void terminateGame(GamePerformDto payload) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'terminateGame'");
     }

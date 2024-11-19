@@ -53,8 +53,8 @@ public class DartCricketGameControl implements GameControl {
     }
 
     @Override
-    public void terminateGame() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void terminateGame(GamePerformDto payload) {
+        controlMap.get("TOUR").persistEndGame(payload);
     }
 
     @Override

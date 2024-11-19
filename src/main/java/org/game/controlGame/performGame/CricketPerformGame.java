@@ -8,4 +8,6 @@ public interface CricketPerformGame {
 
     void persistPerformGame(GamePerformDto dto);
 
+    void persistEndGame(GamePerformDto dto);
+
 }

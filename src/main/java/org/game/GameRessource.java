@@ -41,6 +41,12 @@ public class GameRessource {
         gf.performGame(payload);
     }
 
+    @POST
+    @Path("/end")
+    public void endGame(GamePerformDto payload){
+        gf.endGame(payload);
+    }
+
     @GET
     @Path("dart/{id}")
     @Transactional
