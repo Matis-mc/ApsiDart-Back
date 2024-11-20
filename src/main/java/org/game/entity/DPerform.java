@@ -38,9 +38,17 @@ public class DPerform extends PanacheEntity{
         return find("SELECT dp FROM DPerform dp WHERE dp.dartPlayer.id = :idPlayer and dp.dartGame.id = :idGame", Parameters.with("idGame", idGame).and("idPlayer", idPlayer)).firstResult();
     }
 
+    public static List<DPerform> findByIdGame(Long idGame){
+        return find("SELECT dp FROM DPerform dp WHERE  dp.dartGame.id = :idGame", Parameters.with("idGame", idGame)).list();
+    }
+
+    public static List<DPerform> findByIdPlayer(Long idPlayer){
+        return find("SELECT dp FROM DPerform dp WHERE dp.dartPlayer.id = :idPlayer", Parameters.with("idPlayer", idPlayer)).list();
+    }
+
     @Override
     public String toString() {
-        return "DPerform [dartPlayer=" + dartPlayer + ", dartGame=" + dartGame + ", position=" + position + ", score="
+        return "DPerform [dartPlayer=" + dartPlayer + ", dartGameId=" + dartGame.id + ", position=" + position + ", score="
                 + score + ", nombreTour=" + nombreTour + ", volees=" + volees + "]";
     }
 

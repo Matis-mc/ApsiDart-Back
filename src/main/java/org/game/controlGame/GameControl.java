@@ -11,6 +11,6 @@ public interface GameControl {
 
     void performOnGame(GamePerformDto payload);
 
-    void terminateGame();
+    void terminateGame(GamePerformDto payload);
 
 }

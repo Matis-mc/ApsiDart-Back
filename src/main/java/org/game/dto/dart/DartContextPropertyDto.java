@@ -8,11 +8,12 @@ public record DartContextPropertyDto(
     String score,
     @Nullable String numeroTour,
     @Nullable String delta,
-    @Nullable String volee
+    @Nullable String volee,
+    @Nullable String position
 ) {
 
     public DartContextPropertyDto(){
-        this("", "", "", "", "", "");
+        this("", "", "", "", "", "", "");
     }
     
 }
