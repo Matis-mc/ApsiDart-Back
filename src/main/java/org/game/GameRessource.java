@@ -8,6 +8,7 @@ import org.game.dto.GamePerformDto;
 import org.game.entity.DGame;
 import org.game.entity.DPerform;
 import org.game.model.Game;
+import org.stat.entity.DStat;
 
 import jakarta.activation.UnsupportedDataTypeException;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -54,14 +55,13 @@ public class GameRessource {
         DGame dGame = DGame.findById(id);
         dGame.dPerform = DPerform.findByIdGame(id);
         return DartMapper.mapEntityToModel(dGame);
-
     }
 
     @GET()
     @Path("/dart")
     @Transactional    
     public List<Game> getDartGames(){
-        List<DGame> dgames = DGame.getAll();
+        List<DGame> dgames = DGame.findAll().list();
         return dgames
             .stream()
             .map(d -> {
@@ -73,15 +73,9 @@ public class GameRessource {
 
     // endpoint temporaire de debug
     @GET
-    @Path("/temp/dgames")
-    public List<DGame> getAllDartGames(){
-        return DGame.listAll();
-    }
-
-    @GET
-    @Path("/temp/dperform")
-    public List<DPerform> getAllDartPerform(){
-        return DPerform.listAll();
+    @Path("temp/dstat")
+    public List<DStat> getAllStat(){
+       return DStat.findAll().list(); 
     }
     
 }
