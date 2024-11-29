@@ -16,16 +16,22 @@ import org.game.dto.GamePerformDto;
 import org.game.dto.dart.DartContextPropertyDto;
 import org.game.entity.DGame;
 import org.game.entity.DPerform;
+import org.stat.service.DStatService;
 
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class CricketPerformByTour implements CricketPerformGame{
 
+    private static final String CRIKET = "CRIKET";
     private static final String POSITION = "position";
     public static final String TOUR = "TOUR";
+
+    @Inject
+    DStatService dStatService;
 
     @Override
     public String getType() {
@@ -55,6 +61,7 @@ public class CricketPerformByTour implements CricketPerformGame{
             .stream()
             .map(p -> mapPlayerPerformPropertiesToContext((Map<String, Object>) p))
             .toList();
+        performPlayers.forEach(p -> dStatService.computeDStatFromDartContextProperty(CRIKET, p));
         // todo : enregistrer stat, contacter ia ....
         persistDPerformFromContext(String.valueOf(dto.idJeu()), performPlayers);
         persistEndGame(String.valueOf(dto.idJeu()));
@@ -65,11 +72,11 @@ public class CricketPerformByTour implements CricketPerformGame{
         props.forEach(p -> {
             Log.info(props);
             DPerform dp = DPerform.findByIdGameAndPlayer(idJeu, p.idJoueur());
-            dp.nombreTour = Integer.parseInt(p.numeroTour());
+            dp.nombreTour = Integer.valueOf(p.numeroTour());
             dp.score += Integer.parseInt(p.score());
             dp.volees.add(p.volee());
-            if(Objects.nonNull(p.position()) && p.position() != ""){
-                dp.position = Integer.parseInt(p.position());
+            if(Objects.nonNull(p.position()) && !"".equals(p.position())){
+                dp.position = Integer.valueOf(p.position());
             }
             dp.persistAndFlush();
         });

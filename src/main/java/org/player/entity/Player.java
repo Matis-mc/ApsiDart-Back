@@ -20,6 +20,12 @@ public class Player extends PanacheEntity {
     @OneToMany
     private List<DPerform> dPerform;
 
+    public String getFirstName() {
+        return firstName;
+    }
+    public void setFirstName(String fistName) {
+        this.firstName = fistName;
+    }
     public String getLastName() {
         return lastName;
     }

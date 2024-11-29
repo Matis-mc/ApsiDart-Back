@@ -1,3 +1,6 @@
+#Project
+src/main/resources/application.properties
+
 #Maven
 target/
 pom.xml.tag
