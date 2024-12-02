@@ -8,7 +8,7 @@ import org.game.dto.GamePerformDto;
 import org.game.entity.DGame;
 import org.game.entity.DPerform;
 import org.game.model.Game;
-import org.stat.entity.DStat;
+import org.stat.entity.DGlobalPlayerStat;
 
 import jakarta.activation.UnsupportedDataTypeException;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -74,8 +74,8 @@ public class GameRessource {
     // endpoint temporaire de debug
     @GET
     @Path("temp/dstat")
-    public List<DStat> getAllStat(){
-       return DStat.findAll().list(); 
+    public List<DGlobalPlayerStat> getAllStat(){
+       return DGlobalPlayerStat.findAll().list(); 
     }
     
 }

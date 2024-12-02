@@ -1,7 +1,6 @@
 package org.game.controlGame;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +43,6 @@ public class DartCricketGameControl implements GameControl {
         DGame dGame = createGame(paylaod);
         addParticipant(dGame, paylaod.participants());
         return dGame.id;
-
     }
 
     @Override
@@ -72,19 +70,7 @@ public class DartCricketGameControl implements GameControl {
     }
 
     private void addParticipant(DGame dGame, List<Player> participants){
-        participants.forEach(p -> createDPerform(dGame, p));
-    }
-
-    private DPerform createDPerform(DGame dGame, Player participant){
-        DPerform dPerform = new DPerform();
-        dPerform.dartGame = dGame;
-        dPerform.dartPlayer = participant;
-        dPerform.position = 0;
-        dPerform.score = 0;
-        dPerform.nombreTour = 0;
-        dPerform.volees = new ArrayList<>();
-        dPerform.persist();
-        return dPerform;
+        participants.forEach(p -> DPerform.createDPerform(dGame, p, participants.indexOf(p) + 1));
     }
 
     private String getModeJeu(GamePerformDto dto){
