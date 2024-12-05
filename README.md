@@ -68,6 +68,8 @@ Easily start your REST Web Services
 
 ```
 sudo docker build --no-cache -f src/main/docker/Dockerfile.jvm -t quarkus/apsidart-backend-jvm .
+docker tag quarkus/denis-back denisdartcontainerregistry.azurecr.io/quarkus/denis-back
+docker push denisdartcontainerregistry.azurecr.io/quarkus/denis-back-v1
 ```
 
 ```
