@@ -24,12 +24,10 @@ public class DGame extends PanacheEntity {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<DPerform> dPerform;
-
     
     public static List<DGame> getAll(){
        return DGame.find("SELECT g FROM DGame g LEFT JOIN FETCH g.dPerform").list();
     }
-
 
     @Override
     public String toString() {

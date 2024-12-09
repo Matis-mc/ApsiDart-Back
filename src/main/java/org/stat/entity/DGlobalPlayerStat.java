@@ -1,5 +1,7 @@
 package org.stat.entity;
 
+import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 
 import org.stat.model.AvgStat;
@@ -13,11 +15,12 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "dartStats")
-public class DStat extends PanacheEntity{
+@Table(name = "dartGlobalPlayerStats")
+public class DGlobalPlayerStat extends PanacheEntity{
     
     public String type;
     public Long idPlayer;
+    public Timestamp date;
 
     @OneToOne
     public AvgStat avgPosition;
@@ -37,19 +40,26 @@ public class DStat extends PanacheEntity{
     @OneToOne
     public SumStat nbVictoire;
 
-    public static Optional<DStat> getStatByIdJoueur(String idJoueur){
-       Optional<DStat> optDStat = DStat.find("SELECT s FROM DStat s WHERE s.idPlayer = :idPlayer", Parameters.with("idPlayer", idJoueur)).firstResultOptional();
-       return optDStat;
+    public static List<DGlobalPlayerStat> getAllStatByIdJoueur(String idJoueur){
+       List<DGlobalPlayerStat> listDStat = DGlobalPlayerStat.find("SELECT s FROM DGlobalPlayerStat s WHERE s.idPlayer = :idPlayer", Parameters.with("idPlayer", idJoueur)).list();
+       return listDStat;
     }
 
-    public DStat(){
+    public static Optional<DGlobalPlayerStat> getLastStatByIdJoueur(String idJoueur){
+        return DGlobalPlayerStat
+            .find("SELECT s FROM DGlobalPlayerStat s WHERE s.idPlayer = :idPlayer ORDER BY s.date DSC", Parameters.with("idPlayer", idJoueur))
+            .firstResultOptional();
+    }
+
+    public DGlobalPlayerStat(){
         
     }
 
-    public DStat(String type, Long idPlayer, AvgStat avgPosition, AvgStat avgPoints, PctStat pctVictoire,
+    public DGlobalPlayerStat(String type, Long idPlayer, Timestamp date, AvgStat avgPosition, AvgStat avgPoints, PctStat pctVictoire,
             AvgStat avgNbDartCompleted, SumStat nbGame, SumStat nbVictoire) {
         this.type = type;
         this.idPlayer = idPlayer;
+        this.date = date;
         this.avgPosition = avgPosition;
         this.avgPoints = avgPoints;
         this.pctVictoire = pctVictoire;

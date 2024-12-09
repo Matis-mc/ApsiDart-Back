@@ -12,8 +12,9 @@ import static org.common.DartConstant.Context.PSEUDO;
 import static org.common.DartConstant.Context.SCORE;
 import static org.common.DartConstant.Context.VOLEE;
 import org.common.DtoUtils;
+import org.common.exceptions.FunctionalException;
 import org.game.dto.GamePerformDto;
-import org.game.dto.dart.DartContextPropertyDto;
+import org.game.dto.dart.DartPerformDto;
 import org.game.entity.DGame;
 import org.game.entity.DPerform;
 import org.stat.service.DStatService;
@@ -26,8 +27,9 @@ import jakarta.transaction.Transactional;
 @ApplicationScoped
 public class CricketPerformByTour implements CricketPerformGame{
 
-    private static final String CRIKET = "CRIKET";
-    private static final String POSITION = "position";
+    private static final String CRIKET = "CRICKET";
+    private static final String POSITION_CLASSEMENT = "positionClassement";
+    private static final String POSITION_JEU = "positionJeu";
     public static final String TOUR = "TOUR";
 
     @Inject
@@ -41,12 +43,7 @@ public class CricketPerformByTour implements CricketPerformGame{
     @Override
     @Transactional
     public void persistPerformGame(GamePerformDto dto) {
-        List<DartContextPropertyDto> performPlayers = dto
-            .properties()
-            .values()
-            .stream()
-            .map(p -> mapPlayerPerformPropertiesToContext((Map<String, Object>) p))
-            .toList();
+        List<DartPerformDto> performPlayers = mapToDartContextObject(dto);
         // todo : enregistrer stat, contacter ia ....
         persistDPerformFromContext(String.valueOf(dto.idJeu()), performPlayers);
 
@@ -55,42 +52,39 @@ public class CricketPerformByTour implements CricketPerformGame{
     @Override
     @Transactional
     public void persistEndGame(GamePerformDto dto) {
-        List<DartContextPropertyDto> performPlayers = dto
-            .properties()
-            .values()
-            .stream()
-            .map(p -> mapPlayerPerformPropertiesToContext((Map<String, Object>) p))
-            .toList();
-        performPlayers.forEach(p -> dStatService.computeDStatFromDartContextProperty(CRIKET, p));
+        List<DartPerformDto> performPlayers = mapToDartContextObject(dto);
+        performPlayers.forEach(p -> dStatService.computePlayerStatForThisGame(CRIKET, p));
         // todo : enregistrer stat, contacter ia ....
         persistDPerformFromContext(String.valueOf(dto.idJeu()), performPlayers);
         persistEndGame(String.valueOf(dto.idJeu()));
     }
 
     @Transactional
-    private void persistDPerformFromContext(String idJeu, List<DartContextPropertyDto>  props){
+    private void persistDPerformFromContext(String idJeu, List<DartPerformDto>  props){
         props.forEach(p -> {
             Log.info(props);
-            DPerform dp = DPerform.findByIdGameAndPlayer(idJeu, p.idJoueur());
+            DPerform dp = DPerform.findByIdGameAndPlayer(idJeu, p.idJoueur())
+                .orElseThrow(() -> new FunctionalException("Aucune performance n'a été initialisé sur cette partie"));
             dp.nombreTour = Integer.valueOf(p.numeroTour());
             dp.score += Integer.parseInt(p.score());
             dp.volees.add(p.volee());
-            if(Objects.nonNull(p.position()) && !"".equals(p.position())){
-                dp.position = Integer.valueOf(p.position());
+            if(Objects.nonNull(p.positionClassement()) && !"".equals(p.positionClassement())){
+                dp.positionClassement = Integer.valueOf(p.positionClassement());
             }
             dp.persistAndFlush();
         });
     }
 
-    private static DartContextPropertyDto mapPlayerPerformPropertiesToContext(Map<String, Object> props){
-        return new DartContextPropertyDto(
+    private static DartPerformDto mapPlayerPerformPropertiesToContext(Map<String, Object> props){
+        return new DartPerformDto(
             DtoUtils.extractStringProperty(ID_JOUEUR, props),
             DtoUtils.extractStringProperty(PSEUDO, props),
             DtoUtils.extractStringProperty(SCORE, props),
             DtoUtils.extractStringProperty(NUM_TOUR, props),
             DtoUtils.extractStringProperty(DELTA, props),
             DtoUtils.extractStringProperty(VOLEE, props),
-            DtoUtils.extractStringProperty(POSITION, props));
+            DtoUtils.extractStringProperty(POSITION_CLASSEMENT, props)
+            );
     }
 
     @Transactional
@@ -98,7 +92,16 @@ public class CricketPerformByTour implements CricketPerformGame{
         DGame dGame = DGame.findById(idJeu);
         dGame.statut = STATUT_COMPLETED;
         dGame.persistAndFlush();
-    }   
+    } 
+    
+    private List<DartPerformDto> mapToDartContextObject(GamePerformDto dto){
+        return dto
+            .properties()
+            .values()
+            .stream()
+            .map(p -> mapPlayerPerformPropertiesToContext((Map<String, Object>) p))
+            .toList();
+    }
     
 
    
