@@ -2,6 +2,7 @@ package org.game.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.player.entity.Player;
 
@@ -31,8 +32,8 @@ public class DPerform extends PanacheEntity{
 
     public List<String> volees;
 
-    public static DPerform findByIdGameAndPlayer(String idGame, String idPlayer){
-        return find("SELECT dp FROM DPerform dp WHERE dp.dartPlayer.id = :idPlayer and dp.dartGame.id = :idGame", Parameters.with("idGame", idGame).and("idPlayer", idPlayer)).firstResult();
+    public static Optional<DPerform> findByIdGameAndPlayer(String idGame, String idPlayer){
+        return find("SELECT dp FROM DPerform dp WHERE dp.dartPlayer.id = :idPlayer and dp.dartGame.id = :idGame", Parameters.with("idGame", idGame).and("idPlayer", idPlayer)).firstResultOptional();
     }
 
     public static List<DPerform> findByIdGame(Long idGame){
