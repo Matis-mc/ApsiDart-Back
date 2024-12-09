@@ -17,6 +17,8 @@ import org.game.dto.GamePerformDto;
 import org.game.dto.dart.DartPerformDto;
 import org.game.entity.DGame;
 import org.game.entity.DPerform;
+import org.ia.CommentateurService;
+import org.jboss.logging.Logger;
 import org.stat.service.DStatService;
 
 import io.quarkus.logging.Log;
@@ -32,8 +34,13 @@ public class CricketPerformByTour implements CricketPerformGame{
     private static final String POSITION_JEU = "positionJeu";
     public static final String TOUR = "TOUR";
 
+    private static final Logger LOG = Logger.getLogger(CricketPerformByTour.class);
+
     @Inject
     DStatService dStatService;
+
+    @Inject                                            
+    CommentateurService commentateurService;
 
     @Override
     public String getType() {
@@ -44,6 +51,9 @@ public class CricketPerformByTour implements CricketPerformGame{
     @Transactional
     public void persistPerformGame(GamePerformDto dto) {
         List<DartPerformDto> performPlayers = mapToDartContextObject(dto);
+        String commentaire = commentateurService.commenterVolee(constructPromptFromContext(performPlayers));
+        LOG.error("___________________________________________________________\n");
+        LOG.error("Retour ai : " + commentaire);
         // todo : enregistrer stat, contacter ia ....
         persistDPerformFromContext(String.valueOf(dto.idJeu()), performPlayers);
 
@@ -55,7 +65,6 @@ public class CricketPerformByTour implements CricketPerformGame{
         checkStatuGame(dto.idJeu().toString());
         List<DartPerformDto> performPlayers = mapToDartContextObject(dto);
         performPlayers.forEach(p -> dStatService.computePlayerStatForThisGame(CRIKET, p));
-        // todo : enregistrer stat, contacter ia ....
         persistDPerformFromContext(String.valueOf(dto.idJeu()), performPlayers);
         persistEndGame(String.valueOf(dto.idJeu()));
     }
@@ -113,6 +122,14 @@ public class CricketPerformByTour implements CricketPerformGame{
         if(STATUT_COMPLETED.equals(dg.statut)){
             throw new FunctionalException("La partie avec id : " + idJeu + " est déjà terminé");
         }
+    }
+
+    private String constructPromptFromContext(List<DartPerformDto> performPlayers){
+        String prompt = "Tour " + performPlayers.get(0).numeroTour() + ".";
+        for (DartPerformDto p : performPlayers){
+            prompt += p.pseudo() + "a lancé " + p.volee() + ",";  
+        };
+        return prompt;
     }
        
 }
