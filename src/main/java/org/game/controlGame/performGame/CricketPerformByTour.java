@@ -52,6 +52,7 @@ public class CricketPerformByTour implements CricketPerformGame{
     @Override
     @Transactional
     public void persistEndGame(GamePerformDto dto) {
+        checkStatuGame(dto.idJeu().toString());
         List<DartPerformDto> performPlayers = mapToDartContextObject(dto);
         performPlayers.forEach(p -> dStatService.computePlayerStatForThisGame(CRIKET, p));
         // todo : enregistrer stat, contacter ia ....
@@ -61,6 +62,7 @@ public class CricketPerformByTour implements CricketPerformGame{
 
     @Transactional
     private void persistDPerformFromContext(String idJeu, List<DartPerformDto>  props){
+        checkStatuGame(idJeu);
         props.forEach(p -> {
             Log.info(props);
             DPerform dp = DPerform.findByIdGameAndPlayer(idJeu, p.idJoueur())
@@ -102,7 +104,15 @@ public class CricketPerformByTour implements CricketPerformGame{
             .map(p -> mapPlayerPerformPropertiesToContext((Map<String, Object>) p))
             .toList();
     }
-    
 
-   
+    private void checkStatuGame(String idJeu){
+        DGame dg = DGame.findById(idJeu);
+        if(Objects.isNull(dg)){
+            throw new FunctionalException("Aucune partie trouvé pour l'id : " + idJeu);
+        }
+        if(STATUT_COMPLETED.equals(dg.statut)){
+            throw new FunctionalException("La partie avec id : " + idJeu + " est déjà terminé");
+        }
+    }
+       
 }
