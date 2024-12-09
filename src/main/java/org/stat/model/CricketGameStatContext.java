@@ -47,5 +47,10 @@ public class CricketGameStatContext {
              zt.getPlayerScoredMorePoint(), 
              zt.getMaxAmountPointScored());
     }
+
+    @Override
+    public String toString() {
+        return "context : [" + tableauZone + "]";
+    }
     
 }

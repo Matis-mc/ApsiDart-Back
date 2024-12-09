@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import static org.common.Constant.Cricket.NOMBRE_HIT_TO_CLOSE_ZONE;
+import org.jboss.logging.Logger;
 
 public class ZoneTarget {
+
+    private static final Logger LOG = Logger.getLogger(ZoneTarget.class);
 
     public String labelZone;
     public Integer valueZone;
@@ -26,8 +29,8 @@ public class ZoneTarget {
         this.valueZone = value;
         idPlayers.forEach(i -> {
             tableau.put(i, 0);
-            pointMarques.put(i, value);
-            pointEncaisse.put(i, value);
+            pointMarques.put(i, 0);
+            pointEncaisse.put(i, 0);
         });
     }
 
@@ -75,40 +78,50 @@ public class ZoneTarget {
     public void playerHitZoneCricket(Long idPlayer, Integer nbHit){
         Integer nbDartAlreadyIn = tableau.getOrDefault(idPlayer, 0);
         Integer nbDartNow = nbDartAlreadyIn + nbHit;
-        if(nbDartNow > NOMBRE_HIT_TO_CLOSE_ZONE){
+        if(nbDartNow >= NOMBRE_HIT_TO_CLOSE_ZONE){
             if(firstToClose == 0l){
                 firstToClose = idPlayer;
             }
             Integer pointScored = (nbDartNow - NOMBRE_HIT_TO_CLOSE_ZONE) * valueZone;
-            if(pointScored > maxPointMarque){
-                maxPointMarque = pointScored;
-                idPlayerMaxPointMarque = idPlayer;
+            if(pointScored > 0 ){
+                if(pointScored > maxPointMarque){
+                    maxPointMarque = pointScored;
+                    idPlayerMaxPointMarque = idPlayer;
+                }
+                ajoutPointMarque(idPlayer, pointScored);  
             }
-            ajoutPointMarque(idPlayer, pointScored);  
         }
         tableau.put(idPlayer, nbDartNow);
         nbTotalHits += nbHit;
     }
 
-    private void ajoutPointMarque(Long idPlayer, Integer value){
+    private void ajoutPointMarque(Long idPlayer, Integer ptMarque){
         Integer pointsAlreadyScored = getPointMarquesPlayer(idPlayer);
-        tableau.put(idPlayer, pointsAlreadyScored + value);
+        pointMarques.put(idPlayer, pointsAlreadyScored + ptMarque);
         // on recupère tous les joueurs qui n'ont pas ferme la zone
         tableau.keySet()
             .stream()
             .filter(id -> !idPlayer.equals(id))
-            .filter(id -> hasPlayerClosedZone(idPlayer))
+            .filter(id -> !hasPlayerClosedZone(id))
             .toList()
-            .forEach(p -> ajoutPointEncaisse(p, value));
+            .forEach(p -> ajoutPointEncaisse(p, ptMarque));
     }
 
-    private void ajoutPointEncaisse(Long idPlayer, Integer value){
+    private void ajoutPointEncaisse(Long idPlayer, Integer ptEncaisses){
         Integer pointsAlreadyEncaisse = getPointEncaissesPlayer(idPlayer);
-        Integer totalPointEncaisse = pointsAlreadyEncaisse + value;
+        Integer totalPointEncaisse = pointsAlreadyEncaisse + ptEncaisses;
         if(totalPointEncaisse > maxPointEncaisse){
             maxPointEncaisse = totalPointEncaisse;
             idPlayerMaxPointEncaisse = idPlayer;
         }
-        pointEncaisse.put(idPlayer, pointsAlreadyEncaisse + value);
+        pointEncaisse.put(idPlayer, totalPointEncaisse);
     }
+
+    @Override
+    public String toString() {
+        return "[zone=" + labelZone + ", " + tableau + ", nbHit=" + nbTotalHits + ", firstToClose=" + firstToClose + ", ptEncaisse=" + pointEncaisse + ", pyMarque=" + pointMarques +"] \n";
+    }
+
+    
+
 }

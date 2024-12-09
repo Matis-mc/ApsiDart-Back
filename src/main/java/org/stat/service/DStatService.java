@@ -72,32 +72,38 @@ public class DStatService {
 
         // on initialise le contexte de la partie
         CricketGameStatContext contexte = new CricketGameStatContext(performances.stream().map(d -> d.getDartPlayer().id).toList());
-
+        LOG.warn("context just after initialisation : " + contexte.toString());
         // on simule la partie, volee par volee
         Integer nbTours = performances.get(0).getNombreTour();
-        for(int nbTour = 1; nbTour <= nbTours; nbTour++){
+        LOG.warn("nbTours : " + nbTours);
+        for(int nbTour = 0; nbTour < nbTours; nbTour++){
+            final int tempIndex = nbTour;
+            LOG.warn("nbTour actuel : " + tempIndex);
             performances.forEach(
-                p -> {
-                    try{
-                        String volee = p.getVolees().get(p.nombreTour);
-                        Long idPlayer = p.getDartPlayer().id;
-                        playVolee(volee, idPlayer, contexte);
-                    } catch (FunctionalException e) {
-                        LOG.error(e.getMessage());
-                    } catch (IndexOutOfBoundsException e){
-                        // ignore => ça veut dire que la partie à été terminé par des joueurs qui jouaient avant dans le tour
-                    }
-                }
+                p -> simulateVolee(p, tempIndex, contexte)
             );
         }
-
         // on construit les statistiques une fois la partie simulée
         return getDartGameStatFromDartContexte(contexte);
 
         
     }
 
+    private void simulateVolee(DPerform p, int nbTour, CricketGameStatContext contexte){
+        try{
+            String volee = p.getVolees().get(nbTour);
+            Long idPlayer = p.getDartPlayer().id;
+            playVolee(volee, idPlayer, contexte);
+        } catch (FunctionalException e) {
+            LOG.error(e.getMessage());
+        } catch (IndexOutOfBoundsException e){
+            // ignore => ça veut dire que la partie à été terminé par des joueurs qui jouaient avant dans le tour
+            LOG.error(e.getMessage());
+        }
+    }
+
     private  void playVolee(String volee, Long idPlayer, CricketGameStatContext contexte) throws FunctionalException{
+        LOG.warn("Simulation de la volée : " + volee);
         String[] darts = volee.split("-");
         for (String dart : darts){
             if (dart.contains(DOUBLE_PREFIX)){
@@ -111,7 +117,7 @@ public class DStatService {
                 contexte.playerHitZone(idPlayer, 1, dart);
             }
         }
-
+        LOG.warn("Context après simulation de la volée : " + contexte.toString());
     }
 
     private DartGameStat getDartGameStatFromDartContexte(CricketGameStatContext contexte){
