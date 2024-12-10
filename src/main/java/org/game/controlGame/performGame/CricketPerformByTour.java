@@ -51,7 +51,7 @@ public class CricketPerformByTour implements CricketPerformGame{
     @Transactional
     public void persistPerformGame(GamePerformDto dto) {
         List<DartPerformDto> performPlayers = mapToDartContextObject(dto);
-        String commentaire = commentateurService.commenterVolee(constructPromptFromContext(performPlayers));
+        String commentaire = commentateurService.askAQuestion(constructPromptFromContext(performPlayers));
         LOG.error("___________________________________________________________\n");
         LOG.error("Retour ai : " + commentaire);
         // todo : enregistrer stat, contacter ia ....
@@ -125,11 +125,28 @@ public class CricketPerformByTour implements CricketPerformGame{
     }
 
     private String constructPromptFromContext(List<DartPerformDto> performPlayers){
-        String prompt = "Tour " + performPlayers.get(0).numeroTour() + ".";
+        String prompt = "Tour " + performPlayers.get(0).numeroTour() + ". ";
         for (DartPerformDto p : performPlayers){
-            prompt += p.pseudo() + "a lancé " + p.volee() + ",";  
-        };
+            prompt += p.pseudo() + " a lancé " + describeVolee(p.volee());  
+        }
+        LOG.warn(prompt);
         return prompt;
+    }
+
+    private String describeVolee(String volee){
+        String voleeDescription = "";
+        String[] fleches = volee.split("-");
+        for(String f : fleches){
+            if(f.contains("T")){
+                voleeDescription += "triple " + f.substring(1, 3);
+            } else if(f.contains("D")){
+                voleeDescription += "double " + f.substring(1, 3);
+            } else {
+                voleeDescription += f;
+            }
+            voleeDescription += ", ";
+        }
+        return voleeDescription;
     }
        
 }
