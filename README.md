@@ -67,9 +67,9 @@ Easily start your REST Web Services
 ### Create docker image
 
 ```
-sudo docker build --no-cache -f src/main/docker/Dockerfile.jvm -t quarkus/apsidart-backend-jvm .
+sudo docker build --no-cache -f src/main/docker/Dockerfile.jvm -t quarkus/denis-back .
 docker tag quarkus/denis-back denisdartcontainerregistry.azurecr.io/quarkus/denis-back
-docker push denisdartcontainerregistry.azurecr.io/quarkus/denis-back-v1
+docker push denisdartcontainerregistry.azurecr.io/quarkus/denis-back
 ```
 
 ```
