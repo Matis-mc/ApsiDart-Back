@@ -106,8 +106,7 @@ public class CricketPerformByTour implements CricketPerformGame{
     
     private List<DartPerformDto> mapToDartContextObject(GamePerformDto dto){
         return dto
-            .properties()
-            .values()
+            .performances()
             .stream()
             .map(p -> mapPlayerPerformPropertiesToContext((Map<String, Object>) p))
             .toList();
