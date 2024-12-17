@@ -9,6 +9,7 @@ import org.common.Constant;
 import org.game.controlGame.performGame.CricketPerformGame;
 import org.game.dto.GameCreationDto;
 import org.game.dto.GamePerformDto;
+import org.game.dto.GamePerformRetourDto;
 import org.game.entity.DGame;
 import org.game.entity.DPerform;
 import org.player.entity.Player;
@@ -46,8 +47,8 @@ public class DartCricketGameControl implements GameControl {
     }
 
     @Override
-    public void performOnGame(GamePerformDto payload) {
-       controlMap.get(getModeJeu(payload)).persistPerformGame(payload);
+    public GamePerformRetourDto performOnGame(GamePerformDto payload) {
+       return controlMap.get(getModeJeu(payload)).persistPerformGame(payload);
     }
 
     @Override

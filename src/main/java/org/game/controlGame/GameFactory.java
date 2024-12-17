@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.game.dto.GameCreationDto;
 import org.game.dto.GamePerformDto;
-import org.game.entity.DGame;
+import org.game.dto.GamePerformRetourDto;
 import org.jboss.logging.Logger;
 
 import io.quarkus.arc.All;
@@ -38,8 +38,8 @@ public class GameFactory {
         return controlMap.get(payload.typeJeu().code().toString()).initGame(payload);
     }
 
-    public void performGame(GamePerformDto payload){
-        controlMap.get(payload.modeJeu().code().toString()).performOnGame(payload);
+    public GamePerformRetourDto performGame(GamePerformDto payload){
+        return controlMap.get(payload.modeJeu().code().toString()).performOnGame(payload);
     }
 
     public void endGame(GamePerformDto payload){

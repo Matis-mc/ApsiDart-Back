@@ -2,6 +2,7 @@ package org.game.controlGame;
 
 import org.game.dto.GameCreationDto;
 import org.game.dto.GamePerformDto;
+import org.game.dto.GamePerformRetourDto;
 
 public interface GameControl {
 
@@ -9,7 +10,7 @@ public interface GameControl {
     
     Long initGame(GameCreationDto paylaod);
 
-    void performOnGame(GamePerformDto payload);
+    GamePerformRetourDto performOnGame(GamePerformDto payload);
 
     void terminateGame(GamePerformDto payload);
 

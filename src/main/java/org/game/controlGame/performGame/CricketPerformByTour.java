@@ -14,9 +14,12 @@ import static org.common.DartConstant.Context.VOLEE;
 import org.common.DtoUtils;
 import org.common.exceptions.FunctionalException;
 import org.game.dto.GamePerformDto;
+import org.game.dto.GamePerformRetourDto;
 import org.game.dto.dart.DartPerformDto;
 import org.game.entity.DGame;
 import org.game.entity.DPerform;
+import org.ia.CommentateurService;
+import org.jboss.logging.Logger;
 import org.stat.service.DStatService;
 
 import io.quarkus.logging.Log;
@@ -32,8 +35,13 @@ public class CricketPerformByTour implements CricketPerformGame{
     private static final String POSITION_JEU = "positionJeu";
     public static final String TOUR = "TOUR";
 
+    private static final Logger LOG = Logger.getLogger(CricketPerformByTour.class);
+
     @Inject
     DStatService dStatService;
+
+    @Inject                                            
+    CommentateurService commentateurService;
 
     @Override
     public String getType() {
@@ -42,25 +50,27 @@ public class CricketPerformByTour implements CricketPerformGame{
 
     @Override
     @Transactional
-    public void persistPerformGame(GamePerformDto dto) {
+    public GamePerformRetourDto persistPerformGame(GamePerformDto dto) {
         List<DartPerformDto> performPlayers = mapToDartContextObject(dto);
-        // todo : enregistrer stat, contacter ia ....
+        String commentaire = commentateurService.commentVolee(constructPromptFromContext(performPlayers));
         persistDPerformFromContext(String.valueOf(dto.idJeu()), performPlayers);
+        return new GamePerformRetourDto(commentaire);
 
     }
 
     @Override
     @Transactional
     public void persistEndGame(GamePerformDto dto) {
+        checkStatuGame(dto.idJeu().toString());
         List<DartPerformDto> performPlayers = mapToDartContextObject(dto);
         performPlayers.forEach(p -> dStatService.computePlayerStatForThisGame(CRIKET, p));
-        // todo : enregistrer stat, contacter ia ....
         persistDPerformFromContext(String.valueOf(dto.idJeu()), performPlayers);
         persistEndGame(String.valueOf(dto.idJeu()));
     }
 
     @Transactional
     private void persistDPerformFromContext(String idJeu, List<DartPerformDto>  props){
+        checkStatuGame(idJeu);
         props.forEach(p -> {
             Log.info(props);
             DPerform dp = DPerform.findByIdGameAndPlayer(idJeu, p.idJoueur())
@@ -102,7 +112,40 @@ public class CricketPerformByTour implements CricketPerformGame{
             .map(p -> mapPlayerPerformPropertiesToContext((Map<String, Object>) p))
             .toList();
     }
-    
 
-   
+    private void checkStatuGame(String idJeu){
+        DGame dg = DGame.findById(idJeu);
+        if(Objects.isNull(dg)){
+            throw new FunctionalException("Aucune partie trouvé pour l'id : " + idJeu);
+        }
+        if(STATUT_COMPLETED.equals(dg.statut)){
+            throw new FunctionalException("La partie avec id : " + idJeu + " est déjà terminé");
+        }
+    }
+
+    private String constructPromptFromContext(List<DartPerformDto> performPlayers){
+        String prompt = "Tour " + performPlayers.get(0).numeroTour() + ". ";
+        for (DartPerformDto p : performPlayers){
+            prompt += p.pseudo() + " a lancé " + describeVolee(p.volee());  
+        }
+        LOG.warn(prompt);
+        return prompt;
+    }
+
+    private String describeVolee(String volee){
+        String voleeDescription = "";
+        String[] fleches = volee.split("-");
+        for(String f : fleches){
+            if(f.contains("T")){
+                voleeDescription += "triple " + f.substring(1, 3);
+            } else if(f.contains("D")){
+                voleeDescription += "double " + f.substring(1, 3);
+            } else {
+                voleeDescription += f;
+            }
+            voleeDescription += ", ";
+        }
+        return voleeDescription;
+    }
+       
 }

@@ -2,6 +2,7 @@ package org.game.controlGame;
 
 import org.game.dto.GameCreationDto;
 import org.game.dto.GamePerformDto;
+import org.game.dto.GamePerformRetourDto;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -17,7 +18,7 @@ public class DartX01GameControl implements GameControl {
     }
 
     @Override
-    public void performOnGame(GamePerformDto payload) {
+    public GamePerformRetourDto performOnGame(GamePerformDto payload) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'performOnGame'");
     }
