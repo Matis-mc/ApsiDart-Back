@@ -5,6 +5,7 @@ import java.util.List;
 import org.game.controlGame.GameFactory;
 import org.game.dto.GameCreationDto;
 import org.game.dto.GamePerformDto;
+import org.game.dto.GamePerformRetourDto;
 import org.game.entity.DGame;
 import org.game.entity.DPerform;
 import org.game.model.Game;
@@ -38,8 +39,8 @@ public class GameRessource {
 
     @POST
     @Path("/perform")
-    public void performOnGame(GamePerformDto payload){
-        gf.performGame(payload);
+    public GamePerformRetourDto performOnGame(GamePerformDto payload){
+        return gf.performGame(payload);
     }
 
     @POST

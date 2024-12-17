@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.jboss.logging.Logger;
-import org.jboss.resteasy.annotations.jaxrs.PathParam;
 import org.player.entity.Player;
 
 import jakarta.inject.Inject;
@@ -15,6 +14,7 @@ import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
@@ -45,14 +45,14 @@ public class PlayerRessource {
 
     @GET
     @Path("/{id}")
-    public Player getPlayerById(@PathParam long id){
+    public Player getPlayerById(@PathParam("id") long id){
         return pr.findById(id);
     }
 
     @DELETE
     @Path("/{id}")
     @Transactional
-    public void deletePlayer(@PathParam long id){
+    public void deletePlayer(@PathParam("id") long id){
         pr.deleteById(id);
     }
 

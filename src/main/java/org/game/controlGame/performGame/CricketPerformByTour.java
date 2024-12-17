@@ -14,6 +14,7 @@ import static org.common.DartConstant.Context.VOLEE;
 import org.common.DtoUtils;
 import org.common.exceptions.FunctionalException;
 import org.game.dto.GamePerformDto;
+import org.game.dto.GamePerformRetourDto;
 import org.game.dto.dart.DartPerformDto;
 import org.game.entity.DGame;
 import org.game.entity.DPerform;
@@ -49,13 +50,11 @@ public class CricketPerformByTour implements CricketPerformGame{
 
     @Override
     @Transactional
-    public void persistPerformGame(GamePerformDto dto) {
+    public GamePerformRetourDto persistPerformGame(GamePerformDto dto) {
         List<DartPerformDto> performPlayers = mapToDartContextObject(dto);
-        String commentaire = commentateurService.askAQuestion(constructPromptFromContext(performPlayers));
-        LOG.error("___________________________________________________________\n");
-        LOG.error("Retour ai : " + commentaire);
-        // todo : enregistrer stat, contacter ia ....
+        String commentaire = commentateurService.commentVolee(constructPromptFromContext(performPlayers));
         persistDPerformFromContext(String.valueOf(dto.idJeu()), performPlayers);
+        return new GamePerformRetourDto(commentaire);
 
     }
 
