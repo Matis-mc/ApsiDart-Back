@@ -13,11 +13,20 @@ public class ExponentialEloFunction {
     @ConfigProperty(name = "multielo.exponential.prediction.control")
     private double ctrlPred;
 
+    @ConfigProperty(name = "multielo.exponential.elo.volatility")
+    private double eloVolatility;
+
     private double BASE_10 = 10;
 
-    // --------------- Calculate actual score ------------------ \\
+    // --------------- Calculate new elo ------------------ \\
+    public double calculateNewElo(double actualScore, double expectedScore, double nbPlayer, double currentElo){
 
-    public double scoreProcessor(double nbPlayer, double position){
+        return currentElo + eloVolatility * ( nbPlayer - 1) * (actualScore - expectedScore);
+
+    }
+    
+    // --------------- Calculate actual score ------------------ \\
+    public double calculateScore(double nbPlayer, double position){
 
         double a = Math.pow(expBase, (nbPlayer - position)) - 1;
         double b = 0;
@@ -30,8 +39,7 @@ public class ExponentialEloFunction {
     }
 
     // --------------- Calculate expected score ------------------ \\
-
-    public double scorePredictor(double nbPlayer, double elo, double[] eloPlayers){
+    public double predicteScore(double nbPlayer, double elo, double[] eloPlayers){
 
         double a = 0;
         for (int i = 0; i < nbPlayer; i ++){

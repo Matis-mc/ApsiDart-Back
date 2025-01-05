@@ -27,6 +27,7 @@ public class DartMapper {
         properties.put("volees", perform.volees);
         return new ClassementElement(
             perform.dartPlayer.id,
+            Double.parseDouble(perform.dartPlayer.dartElo),
             perform.positionClassement, 
             Double.valueOf(perform.score.toString()), 
             properties);
