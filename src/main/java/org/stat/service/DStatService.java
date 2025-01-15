@@ -13,6 +13,7 @@ import org.common.exceptions.FunctionalException;
 import org.game.dto.dart.DartPerformDto;
 import org.game.entity.DPerform;
 import org.jboss.logging.Logger;
+import org.multielo.MultiEloService;
 import org.stat.dto.DartCommonGameStat;
 import org.stat.dto.DartGameStat;
 import org.stat.dto.ZoneStatDto;
@@ -23,19 +24,26 @@ import org.stat.model.PctStat;
 import org.stat.model.SumStat;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 @ApplicationScoped
 public class DStatService {
+
+    @Inject
+    MultiEloService multiEloService;
     
     private static final Logger LOG = Logger.getLogger(DStatService.class);
 
-    // ------------------------------------ PERSISTER STATISTIQUE -------------------------------------------- \\
+    // ------------------------------------ PERSISTER STATISTIQUES -------------------------------------------- \\
+
+    // todo : lier le socre elo à ce niveau ?
 
     public void computePlayerStatForThisGame(String type, DartPerformDto ctx){
         boolean playerIsVictorieux = isVictoire(ctx.positionClassement());
         double nbVictoire = playerIsVictorieux?1d:0d;
         LOG.info("ctx" + ctx.toString());
         DGlobalPlayerStat stat = new DGlobalPlayerStat(type, 
+        null,
                     Long.parseLong(ctx.idJoueur()), 
                     Timestamp.valueOf(LocalDateTime.now()),
                     new AvgStat(Double.parseDouble(ctx.positionClassement()), "AVG_POSITION"),

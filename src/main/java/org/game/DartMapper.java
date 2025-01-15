@@ -21,13 +21,14 @@ public class DartMapper {
             return game;
     }
 
+    // todo : lier le score elo du joueur à ce niveau ? -> besoin d'appler les stats actuellement enregistrés
 
     public static ClassementElement mapContextToClassement(DPerform perform){
         Map<String, Object> properties = new HashMap<>();
         properties.put("volees", perform.volees);
         return new ClassementElement(
             perform.dartPlayer.id,
-            Double.parseDouble(perform.dartPlayer.dartElo),
+            null,
             perform.positionClassement, 
             Double.valueOf(perform.score.toString()), 
             properties);

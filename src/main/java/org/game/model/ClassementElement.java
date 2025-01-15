@@ -4,7 +4,7 @@ import java.util.Map;
 
 public record ClassementElement(
     Long idPlayer,
-    double elo,
+    Double elo,
     Integer positionClassement,
     Double score,
     Map<String, Object> properties) {}

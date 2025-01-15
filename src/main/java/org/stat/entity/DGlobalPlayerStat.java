@@ -19,7 +19,11 @@ import jakarta.persistence.Table;
 public class DGlobalPlayerStat extends PanacheEntity{
     
     public String type;
+
+    public Long eloScore;
+
     public Long idPlayer;
+
     public Timestamp date;
 
     @OneToOne
@@ -55,9 +59,10 @@ public class DGlobalPlayerStat extends PanacheEntity{
         
     }
 
-    public DGlobalPlayerStat(String type, Long idPlayer, Timestamp date, AvgStat avgPosition, AvgStat avgPoints, PctStat pctVictoire,
+    public DGlobalPlayerStat(String type, Long eloScore, Long idPlayer, Timestamp date, AvgStat avgPosition, AvgStat avgPoints, PctStat pctVictoire,
             AvgStat avgNbDartCompleted, SumStat nbGame, SumStat nbVictoire) {
         this.type = type;
+        this.eloScore = eloScore;
         this.idPlayer = idPlayer;
         this.date = date;
         this.avgPosition = avgPosition;

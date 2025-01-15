@@ -85,18 +85,6 @@ public class CricketPerformByTour implements CricketPerformGame{
         });
     }
 
-    private static DartPerformDto mapPlayerPerformPropertiesToContext(Map<String, Object> props){
-        return new DartPerformDto(
-            DtoUtils.extractStringProperty(ID_JOUEUR, props),
-            DtoUtils.extractStringProperty(PSEUDO, props),
-            DtoUtils.extractStringProperty(SCORE, props),
-            DtoUtils.extractStringProperty(NUM_TOUR, props),
-            DtoUtils.extractStringProperty(DELTA, props),
-            DtoUtils.extractStringProperty(VOLEE, props),
-            DtoUtils.extractStringProperty(POSITION_CLASSEMENT, props)
-            );
-    }
-
     @Transactional
     private void persistEndGame(String idJeu){
         DGame dGame = DGame.findById(idJeu);
@@ -110,6 +98,19 @@ public class CricketPerformByTour implements CricketPerformGame{
             .stream()
             .map(p -> mapPlayerPerformPropertiesToContext((Map<String, Object>) p))
             .toList();
+    }
+
+    
+    private static DartPerformDto mapPlayerPerformPropertiesToContext(Map<String, Object> props){
+        return new DartPerformDto(
+            DtoUtils.extractStringProperty(ID_JOUEUR, props),
+            DtoUtils.extractStringProperty(PSEUDO, props),
+            DtoUtils.extractStringProperty(SCORE, props),
+            DtoUtils.extractStringProperty(NUM_TOUR, props),
+            DtoUtils.extractStringProperty(DELTA, props),
+            DtoUtils.extractStringProperty(VOLEE, props),
+            DtoUtils.extractStringProperty(POSITION_CLASSEMENT, props)
+            );
     }
 
     private void checkStatuGame(String idJeu){

@@ -19,17 +19,17 @@ public class ExponentialEloFunction {
     private double BASE_10 = 10;
 
     // --------------- Calculate new elo ------------------ \\
-    public double calculateNewElo(double actualScore, double expectedScore, double nbPlayer, double currentElo){
+    public Double calculateNewElo(Double actualScore, Double expectedScore, Double nbPlayer, Double currentElo){
 
         return currentElo + eloVolatility * ( nbPlayer - 1) * (actualScore - expectedScore);
 
     }
     
     // --------------- Calculate actual score ------------------ \\
-    public double calculateScore(double nbPlayer, double position){
+    public Double calculateScore(Double nbPlayer, Integer position){
 
-        double a = Math.pow(expBase, (nbPlayer - position)) - 1;
-        double b = 0;
+        Double a = Math.pow(expBase, (nbPlayer - position)) - 1;
+        Double b = 0d;
         for (int i = 1; i <= nbPlayer; i ++){
             b += Math.pow(expBase, (nbPlayer - i)) - 1;
         }
@@ -39,15 +39,15 @@ public class ExponentialEloFunction {
     }
 
     // --------------- Calculate expected score ------------------ \\
-    public double predicteScore(double nbPlayer, double elo, double[] eloPlayers){
+    public Double predicteScore(Double nbPlayer, Double elo, Double[] eloPlayers){
 
-        double a = 0;
+        Double a = 0d;
         for (int i = 0; i < nbPlayer; i ++){
             if(elo != eloPlayers[i]){
                 a += 1 / (1 + Math.pow(BASE_10, (eloPlayers[i] - elo) / ctrlPred));
             }
         }
-        double b = nbPlayer * ( nbPlayer - 1) / 2;
+        Double b = nbPlayer * ( nbPlayer - 1) / 2;
 
         return a / b;
 

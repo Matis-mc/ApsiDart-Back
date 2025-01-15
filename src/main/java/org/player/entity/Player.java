@@ -16,7 +16,6 @@ public class Player extends PanacheEntity {
     public String firstName;
     public String lastName;
     public String pseudo;
-    public String dartElo;
 
     @OneToMany
     private List<DPerform> dPerform;
