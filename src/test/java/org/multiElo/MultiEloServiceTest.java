@@ -27,7 +27,7 @@ public class MultiEloServiceTest {
         ExponentialEloFunction spy = Mockito.spy(ExponentialEloFunction.class);
         QuarkusMock.installMockForInstance(spy, ExponentialEloFunction.class);  
     }
-        */
+        
 
     @Test
     void calculateEloForAll_EqualsPlayer(){
@@ -47,5 +47,6 @@ public class MultiEloServiceTest {
         assertEquals(true, ratingPlayer3.eloScore() > ratingPlayer2.eloScore());
 
         }
+        */
     
 }

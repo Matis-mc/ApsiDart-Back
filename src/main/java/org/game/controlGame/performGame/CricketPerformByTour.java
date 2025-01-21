@@ -51,9 +51,9 @@ public class CricketPerformByTour implements CricketPerformGame{
     @Override
     @Transactional
     public GamePerformRetourDto persistPerformGame(GamePerformDto dto) {
-        List<DartPerformDto> performPlayers = mapToDartContextObject(dto);
+        List<DartPerformDto> performPlayers = mapToListDto(dto);
         String commentaire = commentateurService.commentVolee(constructPromptFromContext(performPlayers));
-        persistDPerformFromContext(String.valueOf(dto.idJeu()), performPlayers);
+        persistDPerform(String.valueOf(dto.idJeu()), performPlayers);
         return new GamePerformRetourDto(commentaire);
 
     }
@@ -62,14 +62,14 @@ public class CricketPerformByTour implements CricketPerformGame{
     @Transactional
     public void persistEndGame(GamePerformDto dto) {
         checkStatuGame(dto.idJeu().toString());
-        List<DartPerformDto> performPlayers = mapToDartContextObject(dto);
+        List<DartPerformDto> performPlayers = mapToListDto(dto);
         performPlayers.forEach(p -> dStatService.computePlayerStatForThisGame(CRIKET, p));
-        persistDPerformFromContext(String.valueOf(dto.idJeu()), performPlayers);
+        persistDPerform(String.valueOf(dto.idJeu()), performPlayers);
         persistEndGame(String.valueOf(dto.idJeu()));
     }
 
     @Transactional
-    private void persistDPerformFromContext(String idJeu, List<DartPerformDto>  props){
+    private void persistDPerform(String idJeu, List<DartPerformDto>  props){
         checkStatuGame(idJeu);
         props.forEach(p -> {
             Log.info(props);
@@ -92,16 +92,16 @@ public class CricketPerformByTour implements CricketPerformGame{
         dGame.persistAndFlush();
     } 
     
-    private List<DartPerformDto> mapToDartContextObject(GamePerformDto dto){
+    private List<DartPerformDto> mapToListDto(GamePerformDto dto){
         return dto
             .performances()
             .stream()
-            .map(p -> mapPlayerPerformPropertiesToContext((Map<String, Object>) p))
+            .map(p -> mapPropertiesToDto((Map<String, Object>) p))
             .toList();
     }
 
     
-    private static DartPerformDto mapPlayerPerformPropertiesToContext(Map<String, Object> props){
+    private static DartPerformDto mapPropertiesToDto(Map<String, Object> props){
         return new DartPerformDto(
             DtoUtils.extractStringProperty(ID_JOUEUR, props),
             DtoUtils.extractStringProperty(PSEUDO, props),
