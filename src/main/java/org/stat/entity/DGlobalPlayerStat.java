@@ -20,7 +20,7 @@ public class DGlobalPlayerStat extends PanacheEntity{
     
     public String type;
 
-    public Long eloScore;
+    public Double eloScore;
 
     public Long idPlayer;
 
@@ -59,7 +59,7 @@ public class DGlobalPlayerStat extends PanacheEntity{
         
     }
 
-    public DGlobalPlayerStat(String type, Long eloScore, Long idPlayer, Timestamp date, AvgStat avgPosition, AvgStat avgPoints, PctStat pctVictoire,
+    public DGlobalPlayerStat(String type, Double eloScore, Long idPlayer, Timestamp date, AvgStat avgPosition, AvgStat avgPoints, PctStat pctVictoire,
             AvgStat avgNbDartCompleted, SumStat nbGame, SumStat nbVictoire) {
         this.type = type;
         this.eloScore = eloScore;
@@ -81,6 +81,48 @@ public class DGlobalPlayerStat extends PanacheEntity{
         this.nbGame.persist();
         this.nbVictoire.persist();
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public Double getEloScore() {
+        return eloScore;
+    }
+
+    public Long getIdPlayer() {
+        return idPlayer;
+    }
+
+    public Timestamp getDate() {
+        return date;
+    }
+
+    public AvgStat getAvgPosition() {
+        return avgPosition;
+    }
+
+    public AvgStat getAvgPoints() {
+        return avgPoints;
+    }
+
+    public PctStat getPctVictoire() {
+        return pctVictoire;
+    }
+
+    public AvgStat getAvgNbDartCompleted() {
+        return avgNbDartCompleted;
+    }
+
+    public SumStat getNbGame() {
+        return nbGame;
+    }
+
+    public SumStat getNbVictoire() {
+        return nbVictoire;
+    }
+
+    
 
     
 

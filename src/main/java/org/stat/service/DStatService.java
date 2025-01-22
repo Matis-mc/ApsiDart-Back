@@ -14,6 +14,7 @@ import org.game.dto.dart.DartPerformDto;
 import org.game.entity.DPerform;
 import org.jboss.logging.Logger;
 import org.multielo.MultiEloService;
+import org.multielo.model.EloRating;
 import org.stat.dto.DartCommonGameStat;
 import org.stat.dto.DartGameStat;
 import org.stat.dto.ZoneStatDto;
@@ -38,18 +39,39 @@ public class DStatService {
 
     // todo : lier le socre elo à ce niveau ?
 
+    public void computeStatFromPerformances(List<DartPerformDto> dartPerformDtos, String type){
+
+        // on récupère le score elo de chaque joueur
+        dartPerformDtos.forEach(d -> {
+            Double eloScore = DGlobalPlayerStat.getLastStatByIdJoueur(d.getIdJoueur())
+            .map(stat -> stat.getEloScore())
+            .orElse(1000d);
+            d.setElo(eloScore);}
+        );        
+        LOG.debug("[Success] récupération de tous les scores elo");
+        
+        // on récupère tous les nouveauxElo, 
+        List<DartPerformDto> dtoUpdate = multiEloService.processNewEloRating(dartPerformDtos, Double.valueOf(dartPerformDtos.size()));
+        LOG.debug("[Success] calcul des nouveaux scores elo");
+
+        // pour chaque joueur, on persiste les statistiques (elo et autres)
+        dtoUpdate.forEach(d -> computePlayerStatForThisGame(type, d));
+        LOG.debug("[Success] Statistiques enregistrés pour chaque joueur");
+
+    }
+
     public void computePlayerStatForThisGame(String type, DartPerformDto ctx){
-        boolean playerIsVictorieux = isVictoire(ctx.positionClassement());
+        boolean playerIsVictorieux = isVictoire(ctx.getPositionClassement());
         double nbVictoire = playerIsVictorieux?1d:0d;
         LOG.info("ctx" + ctx.toString());
         DGlobalPlayerStat stat = new DGlobalPlayerStat(type, 
-        null,
-                    Long.parseLong(ctx.idJoueur()), 
+                    ctx.getElo(),
+                    Long.parseLong(ctx.getIdJoueur()), 
                     Timestamp.valueOf(LocalDateTime.now()),
-                    new AvgStat(Double.parseDouble(ctx.positionClassement()), "AVG_POSITION"),
-                    new AvgStat(Double.parseDouble(ctx.score()), "AVG_POINTS"),
+                    new AvgStat(Double.parseDouble(ctx.getPositionClassement()), "AVG_POSITION"),
+                    new AvgStat(Double.parseDouble(ctx.getScore()), "AVG_POINTS"),
                     new PctStat(playerIsVictorieux, "PCT_VICTOIRE"),
-                    new AvgStat(computeNombreDartCompleted(ctx.volee()), "AVG_DART_COMPLETED"),
+                    new AvgStat(computeNombreDartCompleted(ctx.getVolee()), "AVG_DART_COMPLETED"),
                     new SumStat(1d, "SUM_NB_GAME"),
                     new SumStat(nbVictoire, "SUM_NB_VICTOIRE"));
         stat.persistStat();
@@ -66,6 +88,12 @@ public class DStatService {
 
         // ------------------------------------ STATISTIQUE PAR PARTIE -------------------------------------------- \\
 
+        /**
+         * On calcule le statistiques propres à une partie, en simulant son déroulé à partir des volées.
+         * @param idGame
+         * @return
+         * @throws FunctionalException
+         */
     public DartGameStat calculateStatForCricketGame(String idGame) throws FunctionalException{
 
         // récupération des performances des joueurs
