@@ -1,13 +1,7 @@
 package org.multiElo;
 
-import java.util.List;
-
-import org.game.model.ClassementElement;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.Test;
 import org.multielo.ExponentialEloFunction;
 import org.multielo.MultiEloService;
-import org.multielo.model.EloRating;
 
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.component.QuarkusComponentTest;

@@ -14,7 +14,6 @@ import org.game.dto.dart.DartPerformDto;
 import org.game.entity.DPerform;
 import org.jboss.logging.Logger;
 import org.multielo.MultiEloService;
-import org.multielo.model.EloRating;
 import org.stat.dto.DartCommonGameStat;
 import org.stat.dto.DartGameStat;
 import org.stat.dto.ZoneStatDto;

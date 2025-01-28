@@ -73,13 +73,13 @@ public class CricketPerformByTour implements CricketPerformGame{
         checkStatuGame(idJeu);
         props.forEach(p -> {
             Log.info(props);
-            DPerform dp = DPerform.findByIdGameAndPlayer(idJeu, p.idJoueur())
+            DPerform dp = DPerform.findByIdGameAndPlayer(idJeu, p.getIdJoueur())
                 .orElseThrow(() -> new FunctionalException("Aucune performance n'a été initialisé sur cette partie"));
-            dp.nombreTour = Integer.valueOf(p.numeroTour());
-            dp.score += Integer.parseInt(p.score());
-            dp.volees.add(p.volee());
-            if(Objects.nonNull(p.positionClassement()) && !"".equals(p.positionClassement())){
-                dp.positionClassement = Integer.valueOf(p.positionClassement());
+            dp.nombreTour = Integer.valueOf(p.getNumeroTour());
+            dp.score += Integer.parseInt(p.getScore());
+            dp.volees.add(p.getVolee());
+            if(Objects.nonNull(p.getPositionClassement()) && !"".equals(p.getPositionClassement())){
+                dp.positionClassement = Integer.valueOf(p.getPositionClassement());
             }
             dp.persistAndFlush();
         });
@@ -106,6 +106,7 @@ public class CricketPerformByTour implements CricketPerformGame{
             DtoUtils.extractStringProperty(ID_JOUEUR, props),
             DtoUtils.extractStringProperty(PSEUDO, props),
             DtoUtils.extractStringProperty(SCORE, props),
+            null,
             DtoUtils.extractStringProperty(NUM_TOUR, props),
             DtoUtils.extractStringProperty(DELTA, props),
             DtoUtils.extractStringProperty(VOLEE, props),
@@ -124,9 +125,9 @@ public class CricketPerformByTour implements CricketPerformGame{
     }
 
     private String constructPromptFromContext(List<DartPerformDto> performPlayers){
-        String prompt = "Tour " + performPlayers.get(0).numeroTour() + ". ";
+        String prompt = "Tour " + performPlayers.get(0).getNumeroTour() + ". ";
         for (DartPerformDto p : performPlayers){
-            prompt += p.pseudo() + " a lancé " + describeVolee(p.volee());  
+            prompt += p.getPseudo() + " a lancé " + describeVolee(p.getVolee());  
         }
         LOG.warn(prompt);
         return prompt;
