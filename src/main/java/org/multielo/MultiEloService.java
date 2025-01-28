@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.game.dto.dart.DartPerformDto;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
+@ApplicationScoped
 public class MultiEloService {
     
     @Inject
