@@ -1,11 +1,11 @@
 package org.stat.dto;
 
 public record ZoneStatDto(
-    Long idPlayerFirstToclose,
+    Long idPlayerFirstToClose,
     Long idPlayerTakeMorePoint,
-    Integer morepointTakenByPayer,
+    Integer maxPointTakenByPlayer,
     Long idPlayerScoreMorePoint,
-    Integer morepointScoredByPayer
+    Integer maxPointScoredByPlayer
 ) {
     
 }

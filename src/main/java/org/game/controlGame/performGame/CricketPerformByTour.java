@@ -52,9 +52,8 @@ public class CricketPerformByTour implements CricketPerformGame{
     @Transactional
     public GamePerformRetourDto persistPerformGame(GamePerformDto dto) {
         List<DartPerformDto> performPlayers = mapToListDto(dto);
-        String commentaire = commentateurService.commentVolee(constructPromptFromContext(performPlayers));
         persistDPerform(String.valueOf(dto.idJeu()), performPlayers);
-        return new GamePerformRetourDto(commentaire);
+          return new GamePerformRetourDto(getCommentaire(performPlayers));
 
     }
 
@@ -63,7 +62,7 @@ public class CricketPerformByTour implements CricketPerformGame{
     public void persistEndGame(GamePerformDto dto) {
         checkStatuGame(dto.idJeu().toString());
         List<DartPerformDto> performPlayers = mapToListDto(dto);
-        performPlayers.forEach(p -> dStatService.computePlayerStatForThisGame(CRIKET, p));
+        dStatService.computeStatFromPerformances(performPlayers, CRIKET);
         persistDPerform(String.valueOf(dto.idJeu()), performPlayers);
         persistEndGame(String.valueOf(dto.idJeu()));
     }
@@ -147,6 +146,15 @@ public class CricketPerformByTour implements CricketPerformGame{
             voleeDescription += ", ";
         }
         return voleeDescription;
+    }
+
+    private String getCommentaire(List<DartPerformDto> performPlayers){
+        try {
+            return commentateurService.commentVolee(constructPromptFromContext(performPlayers));
+        } catch (RuntimeException e) {
+            LOG.warn("Impossible d'appeler les endpoint OVH : " + e);
+            return "";
+        }
     }
        
 }

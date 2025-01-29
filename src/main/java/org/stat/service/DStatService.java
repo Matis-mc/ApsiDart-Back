@@ -9,6 +9,7 @@ import java.util.Objects;
 
 import static org.common.Constant.Game.DOUBLE_PREFIX;
 import static org.common.Constant.Game.TRIBLE_PREFIX;
+import static org.common.Constant.Stat.INITIAL_ELO;
 import org.common.exceptions.FunctionalException;
 import org.game.dto.dart.DartPerformDto;
 import org.game.entity.DPerform;
@@ -35,27 +36,19 @@ public class DStatService {
     private static final Logger LOG = Logger.getLogger(DStatService.class);
 
     // ------------------------------------ PERSISTER STATISTIQUES -------------------------------------------- \\
-
-    // todo : lier le socre elo à ce niveau ?
-
     public void computeStatFromPerformances(List<DartPerformDto> dartPerformDtos, String type){
 
         // on récupère le score elo de chaque joueur
-        dartPerformDtos.forEach(d -> {
-            Double eloScore = DGlobalPlayerStat.getLastStatByIdJoueur(d.getIdJoueur())
-            .map(stat -> stat.getEloScore())
-            .orElse(1000d);
-            d.setElo(eloScore);}
-        );        
-        LOG.debug("[Success] récupération de tous les scores elo");
+        dartPerformDtos.forEach(d -> d.setElo(getEloByPlayer(d.getIdJoueur())));        
+        LOG.info("[Success] récupération de tous les scores elo" + dartPerformDtos.toString());
         
         // on récupère tous les nouveauxElo, 
         List<DartPerformDto> dtoUpdate = multiEloService.processNewEloRating(dartPerformDtos, Double.valueOf(dartPerformDtos.size()));
-        LOG.debug("[Success] calcul des nouveaux scores elo");
+        LOG.info("[Success] calcul des nouveaux scores elo" + dartPerformDtos.toString());
 
         // pour chaque joueur, on persiste les statistiques (elo et autres)
         dtoUpdate.forEach(d -> computePlayerStatForThisGame(type, d));
-        LOG.debug("[Success] Statistiques enregistrés pour chaque joueur");
+        LOG.info("[Success] Statistiques enregistrés pour chaque joueur");
 
     }
 
@@ -83,6 +76,13 @@ public class DStatService {
 
     private double computeNombreDartCompleted(String volees){
         return 0d;
+    }
+
+    private Double getEloByPlayer(String idPlayer){
+        {
+            return DGlobalPlayerStat.getLastStatByIdJoueur(idPlayer)
+            .map(stat -> stat.getEloScore())
+            .orElse(INITIAL_ELO);}
     }
 
         // ------------------------------------ STATISTIQUE PAR PARTIE -------------------------------------------- \\

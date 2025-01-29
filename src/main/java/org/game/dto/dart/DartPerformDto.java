@@ -74,6 +74,14 @@ public class DartPerformDto {
     }
     public void setPositionClassement(String positionClassement) {
         this.positionClassement = positionClassement;
+    }
+
+    @Override
+    public String toString() {
+        return "DartPerformDto [idJoueur=" + idJoueur + ", pseudo=" + pseudo + ", score=" + score + ", elo=" + elo
+                + ", volee=" + volee + ", positionClassement=" + positionClassement + "]";
     }    
+
+    
     
 }

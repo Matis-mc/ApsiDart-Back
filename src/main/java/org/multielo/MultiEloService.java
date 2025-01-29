@@ -26,7 +26,6 @@ public class MultiEloService {
                                         .toArray();
         gameResults.stream()
             .forEach(p -> p.setElo(calculateNewEloRating(p, nbPlayer, allEloPlayers)));
-
         return gameResults;
 
     } 

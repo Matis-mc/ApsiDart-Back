@@ -51,7 +51,7 @@ public class DGlobalPlayerStat extends PanacheEntity{
 
     public static Optional<DGlobalPlayerStat> getLastStatByIdJoueur(String idJoueur){
         return DGlobalPlayerStat
-            .find("SELECT s FROM DGlobalPlayerStat s WHERE s.idPlayer = :idPlayer ORDER BY s.date DSC", Parameters.with("idPlayer", idJoueur))
+            .find("SELECT s FROM DGlobalPlayerStat s WHERE s.idPlayer = :idPlayer ORDER BY s.date DESC", Parameters.with("idPlayer", idJoueur))
             .firstResultOptional();
     }
 

@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import org.jboss.logging.Logger;
 import org.player.entity.Player;
+import org.stat.service.DStatService;
 
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -28,6 +29,9 @@ public class PlayerRessource {
 
     @Inject
     PlayerRepository pr;
+
+    @Inject 
+    DStatService statService;
 
     @POST
     @Transactional
