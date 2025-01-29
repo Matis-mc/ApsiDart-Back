@@ -52,7 +52,12 @@ public class CricketPerformByTour implements CricketPerformGame{
     @Transactional
     public GamePerformRetourDto persistPerformGame(GamePerformDto dto) {
         List<DartPerformDto> performPlayers = mapToDartContextObject(dto);
-        String commentaire = commentateurService.commentVolee(constructPromptFromContext(performPlayers));
+        String commentaire = "";
+        try {
+            commentaire = commentateurService.commentVolee(constructPromptFromContext(performPlayers));
+        } catch(RuntimeException e) {
+            Log.warn("Impossible d'appeler endpoint OVH : " + e);
+        }
         persistDPerformFromContext(String.valueOf(dto.idJeu()), performPlayers);
         return new GamePerformRetourDto(commentaire);
 
