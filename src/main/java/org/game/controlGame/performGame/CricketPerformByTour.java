@@ -51,10 +51,10 @@ public class CricketPerformByTour implements CricketPerformGame{
     @Override
     @Transactional
     public GamePerformRetourDto persistPerformGame(GamePerformDto dto) {
+
         List<DartPerformDto> performPlayers = mapToListDto(dto);
         persistDPerform(String.valueOf(dto.idJeu()), performPlayers);
           return new GamePerformRetourDto(getCommentaire(performPlayers));
-
     }
 
     @Override
