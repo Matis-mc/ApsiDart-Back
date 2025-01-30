@@ -3,6 +3,7 @@ package org.stat;
 import org.common.exceptions.FunctionalException;
 import org.jboss.logging.Logger;
 import org.stat.dto.DartGameStat;
+import org.stat.entity.DGlobalPlayerStat;
 import org.stat.service.DStatService;
 
 import jakarta.inject.Inject;
@@ -28,6 +29,14 @@ public class StatRessource {
     @Path("/dart/{id}")
     public DartGameStat getStatByIdGame(@PathParam(value = "id") String id) throws FunctionalException{
         return dStatService.calculateStatForCricketGame(id);
+    }
+
+    @GET
+    @Path("/dart/player/{id}")
+    public DGlobalPlayerStat getStatByIdPlayer(@PathParam(value = "id") String id) throws FunctionalException{
+        return DGlobalPlayerStat.getLastStatByIdJoueur(id)
+            .orElseThrow(() -> new FunctionalException("Aucune statistique n'est disponible pour le jouer d'id " + id));
+
     }
     
 }

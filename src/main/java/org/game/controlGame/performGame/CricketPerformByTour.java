@@ -51,55 +51,37 @@ public class CricketPerformByTour implements CricketPerformGame{
     @Override
     @Transactional
     public GamePerformRetourDto persistPerformGame(GamePerformDto dto) {
-        List<DartPerformDto> performPlayers = mapToDartContextObject(dto);
-        String commentaire = "";
-        try {
-            commentaire = commentateurService.commentVolee(constructPromptFromContext(performPlayers));
-        } catch(RuntimeException e) {
-            Log.warn("Impossible d'appeler endpoint OVH : " + e);
-        }
-        persistDPerformFromContext(String.valueOf(dto.idJeu()), performPlayers);
-        return new GamePerformRetourDto(commentaire);
 
+        List<DartPerformDto> performPlayers = mapToListDto(dto);
+        persistDPerform(String.valueOf(dto.idJeu()), performPlayers);
+          return new GamePerformRetourDto(getCommentaire(performPlayers));
     }
 
     @Override
     @Transactional
     public void persistEndGame(GamePerformDto dto) {
         checkStatuGame(dto.idJeu().toString());
-        List<DartPerformDto> performPlayers = mapToDartContextObject(dto);
-        performPlayers.forEach(p -> dStatService.computePlayerStatForThisGame(CRIKET, p));
-        persistDPerformFromContext(String.valueOf(dto.idJeu()), performPlayers);
+        List<DartPerformDto> performPlayers = mapToListDto(dto);
+        dStatService.computeStatFromPerformances(performPlayers, CRIKET);
+        persistDPerform(String.valueOf(dto.idJeu()), performPlayers);
         persistEndGame(String.valueOf(dto.idJeu()));
     }
 
     @Transactional
-    private void persistDPerformFromContext(String idJeu, List<DartPerformDto>  props){
+    private void persistDPerform(String idJeu, List<DartPerformDto>  props){
         checkStatuGame(idJeu);
         props.forEach(p -> {
             Log.info(props);
-            DPerform dp = DPerform.findByIdGameAndPlayer(idJeu, p.idJoueur())
+            DPerform dp = DPerform.findByIdGameAndPlayer(idJeu, p.getIdJoueur())
                 .orElseThrow(() -> new FunctionalException("Aucune performance n'a été initialisé sur cette partie"));
-            dp.nombreTour = Integer.valueOf(p.numeroTour());
-            dp.score += Integer.parseInt(p.score());
-            dp.volees.add(p.volee());
-            if(Objects.nonNull(p.positionClassement()) && !"".equals(p.positionClassement())){
-                dp.positionClassement = Integer.valueOf(p.positionClassement());
+            dp.nombreTour = Integer.valueOf(p.getNumeroTour());
+            dp.score += Integer.parseInt(p.getScore());
+            dp.volees.add(p.getVolee());
+            if(Objects.nonNull(p.getPositionClassement()) && !"".equals(p.getPositionClassement())){
+                dp.positionClassement = Integer.valueOf(p.getPositionClassement());
             }
             dp.persistAndFlush();
         });
-    }
-
-    private static DartPerformDto mapPlayerPerformPropertiesToContext(Map<String, Object> props){
-        return new DartPerformDto(
-            DtoUtils.extractStringProperty(ID_JOUEUR, props),
-            DtoUtils.extractStringProperty(PSEUDO, props),
-            DtoUtils.extractStringProperty(SCORE, props),
-            DtoUtils.extractStringProperty(NUM_TOUR, props),
-            DtoUtils.extractStringProperty(DELTA, props),
-            DtoUtils.extractStringProperty(VOLEE, props),
-            DtoUtils.extractStringProperty(POSITION_CLASSEMENT, props)
-            );
     }
 
     @Transactional
@@ -109,12 +91,26 @@ public class CricketPerformByTour implements CricketPerformGame{
         dGame.persistAndFlush();
     } 
     
-    private List<DartPerformDto> mapToDartContextObject(GamePerformDto dto){
+    private List<DartPerformDto> mapToListDto(GamePerformDto dto){
         return dto
             .performances()
             .stream()
-            .map(p -> mapPlayerPerformPropertiesToContext((Map<String, Object>) p))
+            .map(p -> mapPropertiesToDto((Map<String, Object>) p))
             .toList();
+    }
+
+    
+    private static DartPerformDto mapPropertiesToDto(Map<String, Object> props){
+        return new DartPerformDto(
+            DtoUtils.extractStringProperty(ID_JOUEUR, props),
+            DtoUtils.extractStringProperty(PSEUDO, props),
+            DtoUtils.extractStringProperty(SCORE, props),
+            null,
+            DtoUtils.extractStringProperty(NUM_TOUR, props),
+            DtoUtils.extractStringProperty(DELTA, props),
+            DtoUtils.extractStringProperty(VOLEE, props),
+            DtoUtils.extractStringProperty(POSITION_CLASSEMENT, props)
+            );
     }
 
     private void checkStatuGame(String idJeu){
@@ -128,9 +124,9 @@ public class CricketPerformByTour implements CricketPerformGame{
     }
 
     private String constructPromptFromContext(List<DartPerformDto> performPlayers){
-        String prompt = "Tour " + performPlayers.get(0).numeroTour() + ". ";
+        String prompt = "Tour " + performPlayers.get(0).getNumeroTour() + ". ";
         for (DartPerformDto p : performPlayers){
-            prompt += p.pseudo() + " a lancé " + describeVolee(p.volee());  
+            prompt += p.getPseudo() + " a lancé " + describeVolee(p.getVolee());  
         }
         LOG.warn(prompt);
         return prompt;
@@ -150,6 +146,15 @@ public class CricketPerformByTour implements CricketPerformGame{
             voleeDescription += ", ";
         }
         return voleeDescription;
+    }
+
+    private String getCommentaire(List<DartPerformDto> performPlayers){
+        try {
+            return commentateurService.commentVolee(constructPromptFromContext(performPlayers));
+        } catch (RuntimeException e) {
+            LOG.warn("Impossible d'appeler les endpoint OVH : " + e);
+            return "";
+        }
     }
        
 }

@@ -19,7 +19,11 @@ import jakarta.persistence.Table;
 public class DGlobalPlayerStat extends PanacheEntity{
     
     public String type;
+
+    public Double eloScore;
+
     public Long idPlayer;
+
     public Timestamp date;
 
     @OneToOne
@@ -47,7 +51,7 @@ public class DGlobalPlayerStat extends PanacheEntity{
 
     public static Optional<DGlobalPlayerStat> getLastStatByIdJoueur(String idJoueur){
         return DGlobalPlayerStat
-            .find("SELECT s FROM DGlobalPlayerStat s WHERE s.idPlayer = :idPlayer ORDER BY s.date DSC", Parameters.with("idPlayer", idJoueur))
+            .find("SELECT s FROM DGlobalPlayerStat s WHERE s.idPlayer = :idPlayer ORDER BY s.date DESC", Parameters.with("idPlayer", idJoueur))
             .firstResultOptional();
     }
 
@@ -55,9 +59,10 @@ public class DGlobalPlayerStat extends PanacheEntity{
         
     }
 
-    public DGlobalPlayerStat(String type, Long idPlayer, Timestamp date, AvgStat avgPosition, AvgStat avgPoints, PctStat pctVictoire,
+    public DGlobalPlayerStat(String type, Double eloScore, Long idPlayer, Timestamp date, AvgStat avgPosition, AvgStat avgPoints, PctStat pctVictoire,
             AvgStat avgNbDartCompleted, SumStat nbGame, SumStat nbVictoire) {
         this.type = type;
+        this.eloScore = eloScore;
         this.idPlayer = idPlayer;
         this.date = date;
         this.avgPosition = avgPosition;
@@ -76,6 +81,48 @@ public class DGlobalPlayerStat extends PanacheEntity{
         this.nbGame.persist();
         this.nbVictoire.persist();
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public Double getEloScore() {
+        return eloScore;
+    }
+
+    public Long getIdPlayer() {
+        return idPlayer;
+    }
+
+    public Timestamp getDate() {
+        return date;
+    }
+
+    public AvgStat getAvgPosition() {
+        return avgPosition;
+    }
+
+    public AvgStat getAvgPoints() {
+        return avgPoints;
+    }
+
+    public PctStat getPctVictoire() {
+        return pctVictoire;
+    }
+
+    public AvgStat getAvgNbDartCompleted() {
+        return avgNbDartCompleted;
+    }
+
+    public SumStat getNbGame() {
+        return nbGame;
+    }
+
+    public SumStat getNbVictoire() {
+        return nbVictoire;
+    }
+
+    
 
     
 
