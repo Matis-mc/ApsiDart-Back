@@ -1,5 +1,7 @@
 package org.stat;
 
+import java.util.List;
+
 import org.common.exceptions.FunctionalException;
 import org.jboss.logging.Logger;
 import org.stat.dto.DartGameStat;
@@ -36,6 +38,13 @@ public class StatRessource {
     public DGlobalPlayerStat getStatByIdPlayer(@PathParam(value = "id") String id) throws FunctionalException{
         return DGlobalPlayerStat.getLastStatByIdJoueur(id)
             .orElseThrow(() -> new FunctionalException("Aucune statistique n'est disponible pour le jouer d'id " + id));
+
+    }
+
+    @GET
+    @Path("/dart/player/{id}/historique")
+    public List<DGlobalPlayerStat> getAllStatByIdPlayer(@PathParam(value = "id") String id) throws FunctionalException{
+        return DGlobalPlayerStat.getAllStatByIdJoueur(id);
 
     }
     

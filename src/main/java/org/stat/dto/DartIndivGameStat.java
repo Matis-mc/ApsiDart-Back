@@ -5,10 +5,6 @@ public record DartIndivGameStat (
     String idPlayer,
     String pseudo,
     int nbDartThrow,
-    double avgScoreByThrow,
-    double pctTriple,
-    double pctDouble,
-    double pctSimple,
-    double pct0){
+    double precision){
 
 }

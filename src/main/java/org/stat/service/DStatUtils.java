@@ -1,0 +1,65 @@
+package org.stat.service;
+
+import java.util.Comparator;
+import java.util.List;
+
+import org.common.exceptions.FunctionalException;
+import org.game.entity.DPerform;
+import org.jboss.logging.Logger;
+import org.stat.model.CricketGameStatContext;
+
+public class DStatUtils {
+
+    private static final Logger LOG = Logger.getLogger(DStatUtils.class);
+
+    public static CricketGameStatContext simulateCricketGame(List<DPerform> performances){
+        // on trie la partie par ordre de jeu
+        performances.sort(Comparator.comparing(DPerform::getPositionJeu));
+        // on initialise le contexte de la partie
+        CricketGameStatContext contexte = new CricketGameStatContext(performances.stream().map(d -> d.getDartPlayer().id).toList());
+        LOG.warn("context just after initialisation : " + contexte.toString());
+        // on simule la partie, volee par volee
+        Integer nbTours = performances.get(0).getNombreTour();
+        LOG.warn("nbTours : " + nbTours);
+        for(int nbTour = 0; nbTour < nbTours; nbTour++){
+            final int tempIndex = nbTour;
+            LOG.warn("nbTour actuel : " + tempIndex);
+            performances.forEach(
+                p -> simulateVolee(p, tempIndex, contexte)
+            );
+        }
+        return contexte;
+    }
+
+    private static void simulateVolee(DPerform p, int nbTour, CricketGameStatContext contexte){
+        try{
+            String volee = p.getVolees().get(nbTour);
+            Long idPlayer = p.getDartPlayer().id;
+            playVolee(volee, idPlayer, contexte);
+        } catch (FunctionalException e) {
+            LOG.error(e.getMessage());
+        } catch (IndexOutOfBoundsException e){
+            // ignore => ça veut dire que la partie à été terminé par des joueurs qui jouaient avant dans le tour
+            LOG.error(e.getMessage());
+        }
+    }
+
+    private static void playVolee(String volee, Long idPlayer, CricketGameStatContext contexte) throws FunctionalException{
+        LOG.warn("Simulation de la volée : " + volee);
+        String[] darts = volee.split("-");
+        for (String dart : darts){
+            if (dart.contains(DOUBLE_PREFIX)){
+                String label = dart.substring(1);
+                contexte.playerHitZone(idPlayer, 2, label);
+            }
+            else if (dart.contains(TRIPLE_PREFIX)){
+                String label = dart.substring(1);
+                contexte.playerHitZone(idPlayer, 3, label);
+            } else {
+                contexte.playerHitZone(idPlayer, 1, dart);
+            }
+        }
+        LOG.warn("Context après simulation de la volée : " + contexte.toString());
+    }
+
+}

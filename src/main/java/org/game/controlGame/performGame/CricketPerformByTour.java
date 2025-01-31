@@ -123,10 +123,19 @@ public class CricketPerformByTour implements CricketPerformGame{
         }
     }
 
+    private String getCommentaire(List<DartPerformDto> performPlayers){
+        try {
+            return commentateurService.commentVolee(constructPromptFromContext(performPlayers));
+        } catch (RuntimeException e) {
+            LOG.warn("Impossible d'appeler les endpoint OVH : " + e);
+            return "";
+        }
+    }
+
     private String constructPromptFromContext(List<DartPerformDto> performPlayers){
         String prompt = "Tour " + performPlayers.get(0).getNumeroTour() + ". ";
         for (DartPerformDto p : performPlayers){
-            prompt += p.getPseudo() + " a lancé " + describeVolee(p.getVolee());  
+            prompt += p.getPseudo() + " a lancé " + describeVolee(p.getVolee()) + "et a " + p.getScore() + "points";  
         }
         LOG.warn(prompt);
         return prompt;
@@ -146,15 +155,6 @@ public class CricketPerformByTour implements CricketPerformGame{
             voleeDescription += ", ";
         }
         return voleeDescription;
-    }
-
-    private String getCommentaire(List<DartPerformDto> performPlayers){
-        try {
-            return commentateurService.commentVolee(constructPromptFromContext(performPlayers));
-        } catch (RuntimeException e) {
-            LOG.warn("Impossible d'appeler les endpoint OVH : " + e);
-            return "";
-        }
     }
        
 }
