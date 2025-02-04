@@ -6,24 +6,26 @@ public class DartPerformDto {
     String idJoueur;
     String pseudo;
     String score;
+    Integer historiquePositionJeu;
     @Nullable Double elo;
     @Nullable String numeroTour;
     @Nullable String delta;
     @Nullable String volee;
-    @Nullable String positionClassement;
+    @Nullable Integer positionDepart;
 
     
 
-    public DartPerformDto(String idJoueur, String pseudo, String score, Double elo, String numeroTour, String delta,
-            String volee, String positionClassement) {
+    public DartPerformDto(String idJoueur, String pseudo, String score, Double elo, Integer historiquePositionJeu, String numeroTour, String delta,
+            String volee, Integer positionDepart) {
         this.idJoueur = idJoueur;
         this.pseudo = pseudo;
         this.score = score;
         this.elo = elo;
+        this.historiquePositionJeu = historiquePositionJeu;
         this.numeroTour = numeroTour;
         this.delta = delta;
         this.volee = volee;
-        this.positionClassement = positionClassement;
+        this.positionDepart = positionDepart;
     }
 
     public DartPerformDto() {
@@ -51,8 +53,8 @@ public class DartPerformDto {
         return volee;
     }
 
-    public String getPositionClassement() {
-        return positionClassement;
+    public Integer getPositionDepart() {
+        return positionDepart;
     }
     public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
@@ -72,14 +74,14 @@ public class DartPerformDto {
     public void setVolee(String volee) {
         this.volee = volee;
     }
-    public void setPositionClassement(String positionClassement) {
-        this.positionClassement = positionClassement;
+    public void setPositionDepart(Integer positionClassement) {
+        this.positionDepart = positionClassement;
     }
 
     @Override
     public String toString() {
         return "DartPerformDto [idJoueur=" + idJoueur + ", pseudo=" + pseudo + ", score=" + score + ", elo=" + elo
-                + ", volee=" + volee + ", positionClassement=" + positionClassement + "]";
+                + ", volee=" + volee + ", positionClassement=" + positionDepart + "]";
     }    
 
     

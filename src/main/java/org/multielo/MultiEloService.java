@@ -34,7 +34,7 @@ public class MultiEloService {
      * On calcule le nouveaux score Elo d'un joueur à partir de son classement, du nombre de joueur présent et de leurs scores elo.
      */
     public double calculateNewEloRating(DartPerformDto performDto,  double nbPlayer, double[] allEloPlayers){
-        double actualScore = eloFunction.calculateScore(nbPlayer, Integer.parseInt(performDto.getPositionClassement()));
+        double actualScore = eloFunction.calculateScore(nbPlayer, Integer.parseInt(performDto.getPositionDepart()));
         double expectedScore = eloFunction.predicteScore(nbPlayer, performDto.getElo(), allEloPlayers);
         return eloFunction.calculateNewElo(actualScore, expectedScore, nbPlayer, performDto.getElo());
     }

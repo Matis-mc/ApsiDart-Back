@@ -8,21 +8,28 @@ import java.util.Objects;
 import org.common.exceptions.FunctionalException;
 import org.stat.dto.ZoneStatDto;
 
-public class CricketGameStatContext {
+/**
+ * Cette classe doit être le point central de la régénération de partie de cricket dans le but de reclaculer toute les statistiques nécessaires.
+ */
+public class CricketGameContexte {
 
     Map<String, ZoneTarget> tableauZone = new HashMap<>();
+    Map<Integer, List<ScorePlayer>> classementByTour = new HashMap<>();
 
-    public CricketGameStatContext(List<Long> idPlayer){
+    public CricketGameContexte(List<Long> idPlayers){
+        // on initialise les zones pour du cricket
         List<ZoneTarget> zones = List.of(
-            new ZoneTarget(idPlayer, "20", 20),
-            new ZoneTarget(idPlayer, "19", 19),
-            new ZoneTarget(idPlayer, "18", 18),
-            new ZoneTarget(idPlayer, "17", 17),
-            new ZoneTarget(idPlayer, "16", 16),
-            new ZoneTarget(idPlayer, "15", 15),
-            new ZoneTarget(idPlayer, "25", 25),
-            new ZoneTarget(idPlayer, "0", 0));
+            new ZoneTarget(idPlayers, "20", 20),
+            new ZoneTarget(idPlayers, "19", 19),
+            new ZoneTarget(idPlayers, "18", 18),
+            new ZoneTarget(idPlayers, "17", 17),
+            new ZoneTarget(idPlayers, "16", 16),
+            new ZoneTarget(idPlayers, "15", 15),
+            new ZoneTarget(idPlayers, "25", 25),
+            new ZoneTarget(idPlayers, "0", 0));
         zones.forEach(z -> tableauZone.put(z.getLabel(), z));
+        // on initialise le classement pour le tour 0 :
+        classementByTour.put(0, idPlayers.stream().map(p -> new ScorePlayer(p, 0)).toList());
     }
 
     public void playerHitZone(Long idPlayer, Integer nbHit, String label) throws FunctionalException{
@@ -30,7 +37,8 @@ public class CricketGameStatContext {
         if(Objects.isNull(zone)){
             throw new FunctionalException("Aucune zone ne correspond au label : " + label);
         }
-        zone.playerHitZoneCricket(idPlayer, nbHit);
+        zone
+        .playerHitZoneCricket(idPlayer, nbHit);
     }
 
     public Map<String, ZoneStatDto> getListZoneStat(){
@@ -47,6 +55,7 @@ public class CricketGameStatContext {
              zt.getPlayerScoredMorePoint(), 
              zt.getMaxAmountPointScored());
     }
+
 
     @Override
     public String toString() {

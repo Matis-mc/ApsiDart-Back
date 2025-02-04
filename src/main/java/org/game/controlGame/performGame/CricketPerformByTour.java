@@ -28,11 +28,11 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
 @ApplicationScoped
-public class CricketPerformByTour implements CricketPerformGame{
+public class CricketPerformByTour{
 
     private static final String CRIKET = "CRICKET";
-    private static final String POSITION_CLASSEMENT = "positionClassement";
-    private static final String POSITION_JEU = "positionJeu";
+    private static final String POSITION_DEPART = "positionDepart";
+    private static final String POSITION_JEU = "historiquePosition";
     public static final String TOUR = "TOUR";
 
     private static final Logger LOG = Logger.getLogger(CricketPerformByTour.class);
@@ -43,21 +43,15 @@ public class CricketPerformByTour implements CricketPerformGame{
     @Inject                                            
     CommentateurService commentateurService;
 
-    @Override
-    public String getType() {
-        return TOUR;
-    }
 
-    @Override
     @Transactional
     public GamePerformRetourDto persistPerformGame(GamePerformDto dto) {
 
         List<DartPerformDto> performPlayers = mapToListDto(dto);
         persistDPerform(String.valueOf(dto.idJeu()), performPlayers);
-          return new GamePerformRetourDto(getCommentaire(performPlayers));
+        return new GamePerformRetourDto(getCommentaire(performPlayers));
     }
 
-    @Override
     @Transactional
     public void persistEndGame(GamePerformDto dto) {
         checkStatuGame(dto.idJeu().toString());
@@ -74,11 +68,24 @@ public class CricketPerformByTour implements CricketPerformGame{
             Log.info(props);
             DPerform dp = DPerform.findByIdGameAndPlayer(idJeu, p.getIdJoueur())
                 .orElseThrow(() -> new FunctionalException("Aucune performance n'a été initialisé sur cette partie"));
-            dp.nombreTour = Integer.valueOf(p.getNumeroTour());
-            dp.score += Integer.parseInt(p.getScore());
-            dp.volees.add(p.getVolee());
-            if(Objects.nonNull(p.getPositionClassement()) && !"".equals(p.getPositionClassement())){
-                dp.positionClassement = Integer.valueOf(p.getPositionClassement());
+            if(tourAlreadyRecord(Integer.parseInt(p.getNumeroTour()),dp.nombreTour)){
+                // on est sur un update du dernier tour enregistré
+                // on remplace dernière la volée : 
+                dp.volees.removeLast();
+                dp.volees.add(p.getVolee());
+                // on remplace la dernière position de jeu :
+                dp.historiquePositionJeu.removeLast();
+                dp.historiquePositionJeu.add(p.getPositionDepart());
+
+                dp.score = Integer.parseInt(p.getScore());
+            } else {
+                dp.historiquePositionJeu.add(p.getPositionDepart());
+                dp.nombreTour = Integer.valueOf(p.getNumeroTour());
+                dp.score = Integer.parseInt(p.getScore());
+                dp.volees.add(p.getVolee());
+                if(Objects.nonNull(p.getPositionDepart()) && !"".equals(p.getPositionDepart())){
+                    dp.positionDepart = p.getPositionDepart();
+                }
             }
             dp.persistAndFlush();
         });
@@ -106,11 +113,11 @@ public class CricketPerformByTour implements CricketPerformGame{
             DtoUtils.extractStringProperty(PSEUDO, props),
             DtoUtils.extractStringProperty(SCORE, props),
             null,
+            DtoUtils.extractIntProperty(POSITION_JEU, props),
             DtoUtils.extractStringProperty(NUM_TOUR, props),
             DtoUtils.extractStringProperty(DELTA, props),
             DtoUtils.extractStringProperty(VOLEE, props),
-            DtoUtils.extractStringProperty(POSITION_CLASSEMENT, props)
-            );
+            DtoUtils.extractIntProperty(POSITION_DEPART, props));
     }
 
     private void checkStatuGame(String idJeu){
@@ -122,6 +129,14 @@ public class CricketPerformByTour implements CricketPerformGame{
             throw new FunctionalException("La partie avec id : " + idJeu + " est déjà terminé");
         }
     }
+
+    private boolean tourAlreadyRecord(Integer numeroTour, Integer lastTourRecord){
+        return numeroTour == lastTourRecord;
+    }
+
+
+
+    // -------------------------- appel IA pour commentaire ----------------------------- \\
 
     private String getCommentaire(List<DartPerformDto> performPlayers){
         try {

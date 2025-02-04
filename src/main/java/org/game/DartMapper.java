@@ -29,7 +29,7 @@ public class DartMapper {
         return new ClassementElement(
             perform.dartPlayer.id,
             null,
-            perform.positionClassement, 
+            perform.historiquePositionJeu.getLast(), 
             Double.valueOf(perform.score.toString()), 
             properties);
     }

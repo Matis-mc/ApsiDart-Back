@@ -2,27 +2,23 @@ package org.stat.service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static org.common.Constant.Game.DOUBLE_PREFIX;
-import static org.common.Constant.Game.TRIPLE_PREFIX;
+
 import static org.common.Constant.Stat.INITIAL_ELO;
 import org.common.exceptions.FunctionalException;
 import org.game.dto.dart.DartPerformDto;
 import org.game.entity.DPerform;
-import org.game.enums.CodeTypGameEnum;
 import org.jboss.logging.Logger;
 import org.multielo.MultiEloService;
 import org.stat.dto.DartCommonGameStat;
 import org.stat.dto.DartGameStat;
-import org.stat.dto.DartIndivGameStat;
 import org.stat.dto.ZoneStatDto;
 import org.stat.entity.DGlobalPlayerStat;
 import org.stat.model.AvgStat;
-import org.stat.model.CricketGameStatContext;
+import org.stat.model.CricketGameContexte;
 import org.stat.model.PctStat;
 import org.stat.model.SumStat;
 
@@ -55,14 +51,14 @@ public class DStatService {
     }
 
     public void computePlayerStatForThisGame(String type, DartPerformDto ctx){
-        boolean playerIsVictorieux = isVictoire(ctx.getPositionClassement());
+        boolean playerIsVictorieux = isVictoire(ctx.getPositionDepart());
         double nbVictoire = playerIsVictorieux?1d:0d;
         LOG.info("ctx" + ctx.toString());
         DGlobalPlayerStat stat = new DGlobalPlayerStat(type, 
                     ctx.getElo(),
                     Long.parseLong(ctx.getIdJoueur()), 
                     Timestamp.valueOf(LocalDateTime.now()),
-                    new AvgStat(Double.parseDouble(ctx.getPositionClassement()), "AVG_POSITION"),
+                    new AvgStat(Double.parseDouble(ctx.getPositionDepart()), "AVG_POSITION"),
                     new AvgStat(Double.parseDouble(ctx.getScore()), "AVG_POINTS"),
                     new PctStat(playerIsVictorieux, "PCT_VICTOIRE"),
                     new AvgStat(computeNombreDartCompleted(ctx.getVolee()), "AVG_DART_COMPLETED"),
@@ -99,22 +95,22 @@ public class DStatService {
 
         // récupération des performances des joueurs
         List<DPerform> performances = DPerform.findByIdGame(Long.parseLong(idGame));
+            
         if(Objects.isNull(performances) || performances.size() == 0 ){
             throw new FunctionalException("Aucune performance n'est associé à cette partie");
         }
-        // on simule la partie, pour déterminer des statisiques de déroulement
-        CricketGameStatContext contexte = DStatUtils.simulateCricketGame(performances);
+        // on simule la partie, pour déterminer des statisiques sur son déroulement
+        CricketGameContexte contexte = DStatUtils.simulateCricketGame(performances);
         
         // on construit les statistiques une fois la partie simulée
         return getDartGameStatFromDartContexte(contexte);
         
     }
 
-    private DartGameStat getDartGameStatFromDartContexte(CricketGameStatContext contexte){
+    private DartGameStat getDartGameStatFromDartContexte(CricketGameContexte contexte){
         Map<String, ZoneStatDto> zoneStat = contexte.getListZoneStat();
         DartCommonGameStat commonGameStat = new DartCommonGameStat(null, zoneStat);
         return new DartGameStat(commonGameStat, null);
     }
-
 
 }

@@ -72,11 +72,5 @@ public class GameRessource {
             .toList();
     }
 
-    // endpoint temporaire de debug
-    @GET
-    @Path("temp/dstat")
-    public List<DGlobalPlayerStat> getAllStat(){
-       return DGlobalPlayerStat.findAll().list(); 
-    }
     
 }

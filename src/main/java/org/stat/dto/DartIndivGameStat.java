@@ -5,6 +5,7 @@ public record DartIndivGameStat (
     String idPlayer,
     String pseudo,
     int nbDartThrow,
+    double markByTour,
     double precision){
 
 }

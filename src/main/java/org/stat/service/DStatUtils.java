@@ -6,17 +6,25 @@ import java.util.List;
 import org.common.exceptions.FunctionalException;
 import org.game.entity.DPerform;
 import org.jboss.logging.Logger;
-import org.stat.model.CricketGameStatContext;
+import org.stat.model.CricketGameContexte;
+
+import static org.common.Constant.Game.DOUBLE_PREFIX;
+import static org.common.Constant.Game.TRIPLE_PREFIX;
+
 
 public class DStatUtils {
 
     private static final Logger LOG = Logger.getLogger(DStatUtils.class);
 
-    public static CricketGameStatContext simulateCricketGame(List<DPerform> performances){
+    public static CricketGameContexte simulateCricketGame(List<DPerform> performances){
         // on trie la partie par ordre de jeu
-        performances.sort(Comparator.comparing(DPerform::getPositionJeu));
+        performances.sort(Comparator.comparing(DPerform::getPositionDepart));
+
+        // on récupère la liste des id de joueurs 
+        List<Long> idPlayers =  performances.stream().map(d -> d.getDartPlayer().id).toList();
+
         // on initialise le contexte de la partie
-        CricketGameStatContext contexte = new CricketGameStatContext(performances.stream().map(d -> d.getDartPlayer().id).toList());
+        CricketGameContexte contexte = new CricketGameContexte(idPlayers);
         LOG.warn("context just after initialisation : " + contexte.toString());
         // on simule la partie, volee par volee
         Integer nbTours = performances.get(0).getNombreTour();
@@ -31,7 +39,7 @@ public class DStatUtils {
         return contexte;
     }
 
-    private static void simulateVolee(DPerform p, int nbTour, CricketGameStatContext contexte){
+    private static void simulateVolee(DPerform p, int nbTour, CricketGameContexte contexte){
         try{
             String volee = p.getVolees().get(nbTour);
             Long idPlayer = p.getDartPlayer().id;
@@ -44,22 +52,19 @@ public class DStatUtils {
         }
     }
 
-    private static void playVolee(String volee, Long idPlayer, CricketGameStatContext contexte) throws FunctionalException{
+    private static void playVolee(String volee, Long idPlayer, CricketGameContexte contexte) throws FunctionalException{
         LOG.warn("Simulation de la volée : " + volee);
         String[] darts = volee.split("-");
         for (String dart : darts){
             if (dart.contains(DOUBLE_PREFIX)){
-                String label = dart.substring(1);
-                contexte.playerHitZone(idPlayer, 2, label);
+                contexte.playerHitZone(idPlayer, 2, dart.substring(1));
             }
             else if (dart.contains(TRIPLE_PREFIX)){
-                String label = dart.substring(1);
-                contexte.playerHitZone(idPlayer, 3, label);
+                contexte.playerHitZone(idPlayer, 3, dart.substring(1));
             } else {
                 contexte.playerHitZone(idPlayer, 1, dart);
             }
         }
         LOG.warn("Context après simulation de la volée : " + contexte.toString());
     }
-
 }

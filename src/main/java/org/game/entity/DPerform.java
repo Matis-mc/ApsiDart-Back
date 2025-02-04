@@ -22,9 +22,9 @@ public class DPerform extends PanacheEntity{
     @ManyToOne
     public DGame dartGame;
 
-    public Integer positionJeu;
+    public List<Integer> historiquePositionJeu;
 
-    public Integer positionClassement;
+    public Integer positionDepart;
 
     public Integer score;
 
@@ -48,8 +48,8 @@ public class DPerform extends PanacheEntity{
         DPerform dPerform = new DPerform();
         dPerform.dartGame = dGame;
         dPerform.dartPlayer = participant;
-        dPerform.positionJeu = positionJeu;
-        dPerform.positionClassement = 0;
+        dPerform.historiquePositionJeu = new ArrayList<>(positionJeu);
+        dPerform.positionDepart = 0;
         dPerform.score = 0;
         dPerform.nombreTour = 0;
         dPerform.volees = new ArrayList<>();
@@ -62,8 +62,8 @@ public class DPerform extends PanacheEntity{
 
     @Override
     public String toString() {
-        return "DPerform [dartPlayer=" + dartPlayer + ", dartGame=" + dartGame + ", positionJeu=" + positionJeu
-                + ", positionClassement=" + positionClassement + ", score=" + score + ", nombreTour=" + nombreTour
+        return "DPerform [dartPlayer=" + dartPlayer + ", dartGame=" + dartGame + ", positionJeu=" + historiquePositionJeu
+                + ", positionClassement=" + positionDepart + ", score=" + score + ", nombreTour=" + nombreTour
                 + ", volees=" + volees + "]";
     }
 
@@ -71,12 +71,12 @@ public class DPerform extends PanacheEntity{
         return dartPlayer;
     }
 
-    public Integer getPositionJeu() {
-        return positionJeu;
+    public List<Integer> getHistoriquePositionJeu() {
+        return historiquePositionJeu;
     }
 
-    public Integer getPositionClassement() {
-        return positionClassement;
+    public Integer getPositionDepart() {
+        return positionDepart;
     }
 
     public Integer getScore() {

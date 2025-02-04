@@ -34,6 +34,10 @@ public class ZoneTarget {
         });
     }
 
+    public Integer getValue(){
+        return valueZone;
+    }
+
     public String getLabel(){
         return labelZone;
     }
@@ -42,16 +46,32 @@ public class ZoneTarget {
         return firstToClose;
     }
 
+    public void setFirstToClose(Long idPlayer){
+        firstToClose = idPlayer;
+    }
+
     public Integer getNbTotalHit(){
         return nbTotalHits;
+    }
+
+    public void incrHitTotalByOne(){
+        nbTotalHits += 1;
     }
 
     public Long getPlayerScoredMorePoint(){
         return idPlayerMaxPointMarque;
     }
 
+    public void setPlayerScoredMorePoint(Long idPlayer){
+        idPlayerMaxPointMarque = idPlayer;;
+    }
+
     public Integer getMaxAmountPointScored(){
         return maxPointMarque;
+    }
+
+    public void setMaxAmountPointscored(Integer value){
+        maxPointMarque = value;
     }
 
     public Long getPlayerTakeMorePoint(){
@@ -73,6 +93,14 @@ public class ZoneTarget {
 
     public Integer getPointEncaissesPlayer(Long idPlayer){
         return pointEncaisse.getOrDefault(idPlayer, 0);
+    }
+
+    public Integer nbDartAlreadyIn(Long idPlayer){
+        return tableau.getOrDefault(idPlayer, 0);
+    }
+
+    public void ajoutDartForPlayerInZoneTableau(Long idPlayer, Integer nbDartNow){
+        tableau.put(idPlayer, nbDartNow);
     }
 
     public void playerHitZoneCricket(Long idPlayer, Integer nbHit){
@@ -110,11 +138,15 @@ public class ZoneTarget {
     private void ajoutPointEncaisse(Long idPlayer, Integer ptEncaisses){
         Integer pointsAlreadyEncaisse = getPointEncaissesPlayer(idPlayer);
         Integer totalPointEncaisse = pointsAlreadyEncaisse + ptEncaisses;
-        if(totalPointEncaisse > maxPointEncaisse){
-            maxPointEncaisse = totalPointEncaisse;
+        checkMaxPointEncaisseStat(idPlayer, totalPointEncaisse);
+        pointEncaisse.put(idPlayer, totalPointEncaisse);
+    }
+
+    private void checkMaxPointEncaisseStat(Long idPlayer, Integer value){
+        if(value > maxPointEncaisse){
+            maxPointEncaisse = value;
             idPlayerMaxPointEncaisse = idPlayer;
         }
-        pointEncaisse.put(idPlayer, totalPointEncaisse);
     }
 
     @Override

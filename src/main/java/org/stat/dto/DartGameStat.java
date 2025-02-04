@@ -2,7 +2,9 @@ package org.stat.dto;
 
 import java.util.List;
 
+import org.stat.entity.DGlobalPlayerStat;
+
 public record DartGameStat (
-    DartCommonGameStat commonStat,
-    List<DartIndivGameStat> indivStats){
+    DartCommonGameStat gameStats,
+    List<DGlobalPlayerStat> indivStats){
 }
